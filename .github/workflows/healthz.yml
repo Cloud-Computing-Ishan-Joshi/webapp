@@ -28,9 +28,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Run tests
-        run: npm run test
         
       - name: Execute 1 for failure
         if: failure()

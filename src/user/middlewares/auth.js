@@ -1,0 +1,28 @@
+const basicAuth = require('basic-auth');
+const User = require('../model/user');
+
+// if (process.env.NODE_ENV !== 'test') {
+User.sync().then(() => {
+    console.log('User model synchronized successfully for Auth middleware');
+});
+// }
+async function verifyAuth(req, res, next) {
+    res.set('cache-control', 'no-cache');
+    const auth = basicAuth(req);
+    if (!auth || !auth.name || !auth.pass) {
+        res.status(401).send();
+    }
+    // check if the user exists and the password is correct using user.prototype.comparePassword in Sequelize postgresql Schema
+    const user = await User.findOne({
+        where: {
+            username: auth.name
+        }
+    });
+    if (!user || await !user.comparePassword(auth.pass)) {
+        res.status(403).send();
+    }
+    req.user = user;
+    next();
+}
+
+module.exports = verifyAuth;

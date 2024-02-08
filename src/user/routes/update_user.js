@@ -18,10 +18,10 @@ const validate = [
 
 router.put('/self', validate_method, validate_body, auth, validate, async(req, res) => {
     res.set('cache-control', 'no-cache');
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).send();
-    }
+    // const errors = validationResult(req);
+    // if (!errors.isEmpty()) {
+    //     return res.status(400).send();
+    // }
     try {
         const user = await db.models.User.findOne({
             where: {

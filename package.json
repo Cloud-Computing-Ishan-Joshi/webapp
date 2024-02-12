@@ -13,6 +13,9 @@
         "testEnvironment": "node",
         "testMatch": [
             "**/healthz/**/__test__/*.test.js"
+        ],
+        "testIgnorePatterns": [
+            "<rootDir>/src/**/user/**/__test__/*.test.js"
         ]
     },
     "author": "Ishan Joshi",

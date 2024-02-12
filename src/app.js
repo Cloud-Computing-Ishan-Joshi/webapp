@@ -16,7 +16,9 @@ app.use(healthz);
 app.use('/v1/user', user_routes);
 
 app.all('*', (req, res) => {
-    console.log('Invalid request');
+    if (process.env.NODE_ENV !== 'test') {
+        console.log('Invalid request');
+    }
     res.set('Cache-Control', 'no-cache');
     res.status(404).send();
 });

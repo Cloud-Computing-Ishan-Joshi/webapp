@@ -14,7 +14,10 @@ router.all('/healthz', validate_method, validate_body, async(req, res) => {
         await db.authenticate();
         res.status(200).send();
     } catch (err) {
-        console.log(err);
+        if (process.env.NODE_ENV !== 'test') {
+            console.log('Database connection failed');
+        }
+        // console.log(err);
         res.status(503).send();
     }
 });

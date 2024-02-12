@@ -28,6 +28,9 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+      
+      - name: Run Healthz test
+        run: npm run test:cli
         
       - name: Execute 1 for failure
         if: failure()

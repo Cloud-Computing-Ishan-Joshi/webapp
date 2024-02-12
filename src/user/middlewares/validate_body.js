@@ -1,5 +1,5 @@
 const request_body = async(req, res, next) => {
-    res.set('cache-control', 'no-cache');
+    // res.set('cache-control', 'no-cache');
     const allowedMethodsBody = new Set(['POST', 'PUT']);
 
     if ((!Object.keys(req.body).length || Object.keys(req.query).length) && allowedMethodsBody.has(req.method)) {

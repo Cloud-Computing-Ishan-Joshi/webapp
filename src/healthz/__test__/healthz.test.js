@@ -1,19 +1,19 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../../app');
 
 
 describe('Healthz check endpoint', () => {
     test('should return 200 Status when database is connected', async() => {
-        jest.spyOn(require('../database/db'), 'authenticate').mockResolvedValueOnce();
-        jest.spyOn(require('../database/db'), 'sync').mockResolvedValueOnce();
+        jest.spyOn(require('../../database/db'), 'authenticate').mockResolvedValueOnce();
+        jest.spyOn(require('../../database/db'), 'sync').mockResolvedValueOnce();
         const response = await request(app).get('/healthz');
         expect(response.statusCode).toBe(200);
         expect(response.headers['cache-control']).toBe('no-cache');
     });
 
     test('should return 503 Status when database is not connected', async() => {
-        jest.spyOn(require('../database/db'), 'authenticate').mockRejectedValueOnce(console.log('Connection failed'));
-        jest.spyOn(require('../database/db'), 'sync').mockRejectedValueOnce(console.log('Connection failed'));
+        jest.spyOn(require('../../database/db'), 'authenticate').mockRejectedValueOnce(console.log('Connection failed'));
+        jest.spyOn(require('../../database/db'), 'sync').mockRejectedValueOnce(console.log('Connection failed'));
         const response = await request(app).get('/healthz');
         expect(response.statusCode).toBe(503);
         expect(response.headers['cache-control']).toBe('no-cache');

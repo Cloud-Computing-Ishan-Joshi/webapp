@@ -3,11 +3,11 @@ const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 const User = require('../../user/model/user');
 
-if (process.env.NODE_ENV !== 'test') {
-    User.sync().then(() => {
+User.sync().then(() => {
+    if (process.env.NODE_ENV !== 'test') {
         console.log('User model synchronized successfully');
-    });
-}
+    }
+});
 const validate_body = require('../middlewares/validate_body');
 
 const router = express.Router();
@@ -43,7 +43,10 @@ router.post('/', validate_body, validate, async(req, res) => {
         // res.set('Authorization', `Bearer ${token}`);
         res.status(201).send(user);
     } catch (err) {
-        console.log(err);
+        if (process.env.NODE_ENV !== 'test') {
+            console.log('Error creating user');
+            console.log(err);
+        }
         res.status(400).send();
     }
 });

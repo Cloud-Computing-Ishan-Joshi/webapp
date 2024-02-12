@@ -30,5 +30,4 @@ jobs:
         run: npm install
         
       - name: Execute 1 for failure
-        if: failure()
         run: exit 1

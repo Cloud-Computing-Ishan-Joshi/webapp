@@ -23,7 +23,7 @@ jobs:
           POSTGRES_DB: ${{ secrets.DB_NAME }}
           POSTGRES_USER: ${{ secrets.DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_PORT: 5432
+          POSTGRES_PORT: ${{ secrets.DB_PORT }}
         ports:
           - 5432:5432
         options: >-
@@ -33,22 +33,6 @@ jobs:
           --health-retries 5
 
     steps:
-      # - name: Install PostgreSQL client
-      #   run: |
-      #     sudo apt-get update
-      #     sudo apt-get install --yes postgresql-client
-      # # queries database with postgres client
-      # - name: Query database
-      #   run: psql -h $POSTGRES_HOST -d $POSTGRES_DB -U $POSTGRES_USER -c 'SELECT 1;'
-      #   env:
-      #     # postgress password is required; alternatively, you can run:
-      #     # `PGPASSWORD=postgres_password psql ...`
-      #     PGPASSWORD: ${{ secrets.DB_PASSWORD }}
-      #     POSTGRES_DB: ${{ secrets.DB_NAME }}
-      #     POSTGRES_USER: ${{ secrets.DB_USER }}
-      #     POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      #     POSTGRES_HOST: ${{ secrets.DB_HOST }}
-
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -56,22 +40,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      # - name: Check Postgres connection with password
-      #   run: |
-      #     # Use 'pg' module for secure password handling
-      #     PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -h $DB_HOST -U $DB_USER -d $DB_NAME -t -c "SELECT 1;" >/dev/null 2>&1
-    
-      #     if [[ $? -eq 0 ]]; then
-      #       echo "Postgres connection successful!"
-      #     else
-      #       echo "Postgres connection failed!"
-      #       exit 1
-      #     fi
-    
-      #   env:
-      #     DB_HOST: ${{ secrets.DB_HOST }}
-      #     DB_USER: ${{ secrets.DB_USER }}
-      #     DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Install dependencies
         run: npm install
@@ -90,6 +58,6 @@ jobs:
           LOGGER: ${{ secrets.LOGGER }}
 
         
-      - name: Execute 1 for failure
-        if: failure()
-        run: exit 1
+      # - name: Execute 1 for failure
+      #   if: failure()
+      #   run: exit 1

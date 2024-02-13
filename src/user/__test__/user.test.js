@@ -12,7 +12,7 @@ username = faker.internet.email();
 password = "test@12345";
 
 describe('User endpoint', () => {
-    test('should return 200 Status when user is created', async() => {
+    test('should return 201 Status when user is created', async() => {
         const request_body = {
             first_name: first_name,
             last_name: last_name,

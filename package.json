@@ -6,8 +6,8 @@
     "scripts": {
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
-        "test": "jest --watchAll --verbose --no-cache --detectOpenHandles --forceExit",
-        "test:cli": "jest --detectOpenHandles --forceExit"
+        "test": "jest --watchAll --verbose --no-cache --forceExit",
+        "test:cli": "jest --forceExit"
     },
     "jest": {
         "testEnvironment": "node",

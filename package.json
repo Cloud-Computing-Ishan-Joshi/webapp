@@ -13,6 +13,10 @@
         "testEnvironment": "node",
         "testMatch": [
             "**/**/**/__test__/*.test.js"
+        ],
+        "collectCoverage": true,
+        "collectCoverageFrom": [
+            "src/**/*.js"
         ]
     },
     "author": "Ishan Joshi",

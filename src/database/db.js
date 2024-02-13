@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'test') {
 const db = new sequelize(db_name, process.env.DB_USER, process.env.DB_PASSWORD, {
     host: process.env.DB_HOST,
     dialect: 'postgres',
-    logging: true
+    logging: false
 });
 
 module.exports = db;

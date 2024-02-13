@@ -52,7 +52,6 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           PORT: ${{ secrets.DB_PORT }}
           NODE_ENV: test
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
           DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
           DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
 

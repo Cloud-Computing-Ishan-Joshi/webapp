@@ -7,7 +7,7 @@
         "start": "node src/index.js",
         "dev": "nodemon src/index.js",
         "test": "jest --watchAll --verbose --no-cache --forceExit",
-        "test:cli": "jest --verbose --forceExit"
+        "test:cli": "jest --verbose --detectOpenHandles --forceExit"
     },
     "jest": {
         "testEnvironment": "node",

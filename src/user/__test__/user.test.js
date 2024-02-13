@@ -10,6 +10,8 @@ first_name = faker.name.firstName();
 last_name = faker.name.lastName();
 username = faker.internet.email();
 password = "test@12345";
+updated_first_name = faker.name.firstName();
+updated_last_name = faker.name.lastName();
 
 describe('User endpoint', () => {
     test('should return 201 Status when user is created', async() => {
@@ -46,26 +48,24 @@ describe('User endpoint', () => {
             password: password
         };
         const request_body = {
-            first_name: faker.name.firstName(),
-            last_name: faker.name.lastName(),
+            first_name: updated_first_name,
+            last_name: updated_last_name,
         };
         const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
         expect(response.statusCode).toBe(204);
         expect(response.headers['cache-control']).toBe('no-cache');
     });
 
-    test('should return 400 Status code when user update is requested', async() => {
+    test('should return 200 Status code and updated user after update', async() => {
         const basic_auth = {
             username: username,
             password: password
         };
-        const request_body = {
-            first_name: faker.name.firstName(),
-            username: faker.internet.email()
-        };
-        const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
-        expect(response.statusCode).toBe(400);
+        const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
+        expect(response.statusCode).toBe(200);
         expect(response.headers['cache-control']).toBe('no-cache');
+        expect(response.body.first_name).toBe(updated_first_name);
+        expect(response.body.last_name).toBe(updated_last_name);
     });
 
     afterEach(async() => {

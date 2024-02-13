@@ -39,6 +39,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Check Postgres connection
+        run: |
+          if psql -h $DB_HOST -U $DB_USER -d $DB_NAME -t -c "SELECT 1;" >/dev/null 2>&1; then
+            echo "Postgres connection successful!"
+          else
+            echo "Postgres connection failed!"
+            exit 1
+          fi
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
 
       - name: Install dependencies
         run: npm install

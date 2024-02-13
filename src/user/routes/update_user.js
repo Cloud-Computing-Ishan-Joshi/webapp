@@ -30,12 +30,12 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         });
         if (user) {
             await user.update(req.body);
-            res.status(204).send();
+            return res.status(204).send();
         } else {
-            res.status(403).send();
+            return res.status(403).send();
         }
     } catch (err) {
-        res.status(500).send();
+        return res.status(500).send();
     }
 });
 

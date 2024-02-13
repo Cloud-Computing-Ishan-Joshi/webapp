@@ -42,7 +42,7 @@ jobs:
       - name: Check Postgres connection with password
         run: |
           # Use 'pg' module for secure password handling
-          PGPASSWORD=$DB_PASSWORD psql -h $DB_HOST -U $DB_USER -d $DB_NAME -t -c "SELECT 1;" >/dev/null 2>&1
+          PGPASSWORD=${{ secrets.DB_PASSWORD }} psql -h $DB_HOST -U $DB_USER -d $DB_NAME -t -c "SELECT 1;" >/dev/null 2>&1
     
           if [[ $? -eq 0 ]]; then
             echo "Postgres connection successful!"
@@ -55,7 +55,6 @@ jobs:
           DB_HOST: ${{ secrets.DB_HOST }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_NAME: ${{ secrets.DB_NAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Install dependencies
         run: npm install

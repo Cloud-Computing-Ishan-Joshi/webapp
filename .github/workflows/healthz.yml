@@ -39,9 +39,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          
-      - name: Check if Postgres is reachable
-        run: nc -zvw3 ${{ secrets.DB_HOST }} 5432 || (echo "Postgres server not reachable" && exit 1)
+      - name: Check Postgres connection
+        run: |
+          if psql -h $DB_HOST -U $DB_USER -d $DB_NAME -t -c "SELECT 1;" >/dev/null 2>&1; then
+            echo "Postgres connection successful!"
+          else
+            echo "Postgres connection failed!"
+            exit 1
+          fi
+        env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Install dependencies
         run: npm install
@@ -53,7 +62,7 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
-          PORT: ${{ job.services.postgres.ports['5432'] }}
+          PORT: ${{ secrets.DB_PORT }}
           NODE_ENV: test
           DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
           DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}

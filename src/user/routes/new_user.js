@@ -25,7 +25,7 @@ router.post('/', validate_body, validate, async(req, res) => {
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).send();
+        return res.status(400).end();
     }
     try {
         // check if the user already exists
@@ -35,19 +35,19 @@ router.post('/', validate_body, validate, async(req, res) => {
             }
         });
         if (userExists) {
-            return res.status(400).send();
+            return res.status(400).end();
         }
         const user = await User.create(req.body);
         // const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
         res.set('Cache-Control', 'no-cache');
         // res.set('Authorization', `Bearer ${token}`);
-        res.status(201).send(user);
+        return res.status(201).send(user);
     } catch (err) {
         if (process.env.NODE_ENV !== 'test') {
             console.log('Error creating user');
             console.log(err);
         }
-        res.status(400).send();
+        return res.status(400).end();
     }
 });
 

@@ -12,7 +12,7 @@ async function verifyAuth(req, res, next) {
     res.set('cache-control', 'no-cache');
     const auth = basicAuth(req);
     if (!auth || !auth.name || !auth.pass) {
-        res.status(401).send();
+        return res.status(401).end();
     }
     // check if the user exists and the password is correct using user.prototype.comparePassword in Sequelize postgresql Schema
     const user = await User.findOne({
@@ -20,8 +20,9 @@ async function verifyAuth(req, res, next) {
             username: auth.name
         }
     });
-    if (!user || await !user.comparePassword(auth.pass)) {
-        res.status(403).send();
+
+    if (!user || !await user.comparePassword(auth.pass)) {
+        return res.status(403).end();
     }
     req.user = user;
     next();

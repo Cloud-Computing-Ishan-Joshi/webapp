@@ -1,7 +1,6 @@
 const request = require('supertest');
 const app = require('../../app');
 
-
 describe('Healthz check endpoint', () => {
     test('should return 200 Status when database is connected', async() => {
         jest.spyOn(require('../../database/db'), 'authenticate').mockResolvedValueOnce();

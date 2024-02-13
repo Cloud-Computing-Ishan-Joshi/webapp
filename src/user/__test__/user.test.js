@@ -34,6 +34,12 @@ describe('User endpoint', () => {
         expect(response.headers['cache-control']).toBe('no-cache');
     });
 
+    test('should return 401 Status code when user is not authenticated', async() => {
+        const response = await request(app).get('/v1/user/self');
+        expect(response.statusCode).toBe(401);
+        expect(response.headers['cache-control']).toBe('no-cache');
+    });
+
     test('should return 204 Status code when user is updated', async() => {
         const basic_auth = {
             username: username,
@@ -45,6 +51,20 @@ describe('User endpoint', () => {
         };
         const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
         expect(response.statusCode).toBe(204);
+        expect(response.headers['cache-control']).toBe('no-cache');
+    });
+
+    test('should return 400 Status code when user update is requested', async() => {
+        const basic_auth = {
+            username: username,
+            password: password
+        };
+        const request_body = {
+            first_name: faker.name.firstName(),
+            username: faker.internet.email()
+        };
+        const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
+        expect(response.statusCode).toBe(400);
         expect(response.headers['cache-control']).toBe('no-cache');
     });
 

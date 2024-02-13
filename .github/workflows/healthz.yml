@@ -54,6 +54,7 @@ jobs:
           NODE_ENV: test
           DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
           DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
+          LOGGER: ${{ secrets.LOGGER }}
 
         
       - name: Execute 1 for failure

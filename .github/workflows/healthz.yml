@@ -18,7 +18,7 @@ jobs:
         node-version: [18.x]
     services:
       postgres:
-        image: postgres:16
+        image: postgres:latest
         env:
           POSTGRES_DB: postgres
           POSTGRES_USER: ${{ secrets.DB_USER }}

@@ -45,6 +45,8 @@ jobs:
         run: |
           sudo apt-get -yqq install postgresql
           sudo systemctl start postgresql
+          sudo systemctl enable postgresql
+          sudo -u $DB_USER_ORIG psql -c "\l"
           sudo -u $DB_USER_ORIG psql -c "CREATE DATABASE $DB_NAME;"
           sudo -u $DB_USER_ORIG psql -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
           sudo -u $DB_USER_ORIG psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"

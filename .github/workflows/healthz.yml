@@ -16,23 +16,38 @@ jobs:
       matrix:
         # This sub-keyword defines the Node.js version to use for the job
         node-version: [18.x]
-    services:
-      postgres:
-        image: postgres:latest
-        env:
-          POSTGRES_DB: postgres
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_PORT: 5432
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+    # services:
+    #   postgres:
+    #     image: postgres:latest
+    #     env:
+    #       POSTGRES_DB: postgres
+    #       POSTGRES_USER: ${{ secrets.DB_USER }}
+    #       POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+    #       POSTGRES_PORT: 5432
+    #     ports:
+    #       - 5432:5432
+    #     options: >-
+    #       --health-cmd pg_isready
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
 
     steps:
+
+      - name: Set up PostgreSQL on Ubuntu
+        run: |
+          sudo systemctl start postgresql.service
+          pg_isready
+
+      - name: Create additional user
+        run: |
+          sudo -u postgres psql --command="CREATE USER ${{secrets.DB_USER}} PASSWORD ${{secrets.DB_PASSWORD}}" --command="\du"
+      
+      - name: Create additional database
+        run: |
+          sudo -u postgres createdb ${{secrets.DB_NAME}} --owner=${{secrets.DB_USER}} 
+          PGPASSWORD=${{secrets.DB_PASSWORD}} psql -h localhost -U ${{secrets.DB_USER}} -d ${{secrets.DB_NAME}} -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+      
       - name: Check out code
         uses: actions/checkout@v2
 
@@ -47,7 +62,7 @@ jobs:
       - name: Run Healthz test
         run: npm run test:cli
         env:
-          DB_NAME: postgres
+          DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}

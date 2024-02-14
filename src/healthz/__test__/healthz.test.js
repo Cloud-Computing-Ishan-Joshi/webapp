@@ -3,8 +3,8 @@ const app = require('../../app');
 
 describe('Healthz check endpoint', () => {
     test('should return 200 Status when database is connected', async() => {
-        jest.spyOn(require('../../database/db'), 'authenticate').mockResolvedValueOnce();
-        jest.spyOn(require('../../database/db'), 'sync').mockResolvedValueOnce();
+        // jest.spyOn(require('../../database/db'), 'authenticate').mockResolvedValueOnce();
+        // jest.spyOn(require('../../database/db'), 'sync').mockResolvedValueOnce();
         const response = await request(app).get('/healthz');
         expect(response.statusCode).toBe(200);
         expect(response.headers['cache-control']).toBe('no-cache');

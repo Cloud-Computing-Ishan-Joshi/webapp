@@ -39,14 +39,14 @@ jobs:
           sudo systemctl start postgresql.service
           pg_isready
 
-      - name: Create additional user
-        run: |
-          sudo -u postgres psql --command="CREATE USER ${{secrets.DB_USER}} PASSWORD ${{secrets.DB_PASSWORD}}" --command="\du"
+      # - name: Create additional user
+      #   run: |
+      #     sudo -u postgres psql --command="CREATE USER ${{secrets.DB_USER}} PASSWORD ${{secrets.DB_PASSWORD}}" --command="\du"
       
-      - name: Create additional database
-        run: |
-          sudo -u postgres createdb ${{secrets.DB_NAME}} --owner=${{secrets.DB_USER}} 
-          sudo PGPASSWORD=${{secrets.DB_PASSWORD}}
+      # - name: Create additional database
+      #   run: |
+      #     sudo -u postgres createdb ${{secrets.DB_NAME}} --owner=${{secrets.DB_USER}} 
+      #     sudo PGPASSWORD=${{secrets.DB_PASSWORD}}
       
       - name: Check out code
         uses: actions/checkout@v2
@@ -62,7 +62,7 @@ jobs:
       - name: Run Healthz test
         run: npm run test:cli
         env:
-          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_NAME: postgres
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}

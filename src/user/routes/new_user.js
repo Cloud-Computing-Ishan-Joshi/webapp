@@ -25,6 +25,8 @@ router.post('/', validate_body, validate, async(req, res) => {
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log(req.body);
+        console.log(errors);
         return res.status(400).end();
     }
     try {

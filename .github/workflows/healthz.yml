@@ -46,7 +46,7 @@ jobs:
       - name: Create additional database
         run: |
           sudo -u postgres createdb ${{secrets.DB_NAME}} --owner=${{secrets.DB_USER}} 
-          PGPASSWORD=${{secrets.DB_PASSWORD}} psql -h localhost -U ${{secrets.DB_USER}} -d ${{secrets.DB_NAME}} -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";"
+          sudo PGPASSWORD=${{secrets.DB_PASSWORD}}
       
       - name: Check out code
         uses: actions/checkout@v2

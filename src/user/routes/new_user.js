@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 const User = require('../../user/model/user');
 
-User.sync().then(() => {
+User.sync({ alter: true }).then(() => {
     if (process.env.NODE_ENV !== 'test') {
         console.log('User model synchronized successfully');
     }

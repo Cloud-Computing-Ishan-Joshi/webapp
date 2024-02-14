@@ -31,17 +31,23 @@ router.post('/', validate_body, validate, async(req, res) => {
     }
     try {
         // check if the user already exists
-        const userExists = await User.findOne({
+        User.findOne({
             where: {
                 username: req.body.username
             }
+        }).then((user) => {
+            if (user) {
+                console.log('****************User already exists*****************');
+                return res.status(400).end();
+            }
         });
-        if (userExists) {
-            log('****************User already exists*****************');
-            return res.status(400).end();
-        }
+        // if (userExists) {
+        //     log('****************User already exists*****************');
+        //     return res.status(400).end();
+        // }
         const user = await User.create(req.body);
         // const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
+        // res.set('Cache-Control', 'no-cache');
         // res.set('Authorization', `Bearer ${token}`);
         return res.status(201).send(user);
     } catch (err) {

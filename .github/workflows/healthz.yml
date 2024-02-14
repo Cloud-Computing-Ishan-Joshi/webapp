@@ -38,6 +38,9 @@ jobs:
         run: |
           sudo systemctl start postgresql.service
           pg_isready
+          sudo -u postgres psql --command="\du"
+          sudo -u postgres psql --command="\l"
+          sudo -u postgres psql --command="\password postgres"
 
       # - name: Create additional user
       #   run: |

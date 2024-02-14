@@ -45,19 +45,20 @@ jobs:
         run: |
           sudo apt-get -yqq install postgresql
           sudo systemctl start postgresql
-          sudo -u postgres psql -c "CREATE DATABASE $DB_NAME;"
-          sudo -u postgres psql -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
-          sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+          sudo -u $DB_USER_ORIG psql -c "CREATE DATABASE $DB_NAME;"
+          sudo -u $DB_USER_ORIG psql -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
+          sudo -u $DB_USER_ORIG psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
         env:
           DB_USER: ${{ secrets.DB_USER }}
+          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_NAME: ${{ secrets.DB_NAME }}
 
 
-      - name: Wait for PostgreSQL
-        run: |
-          sudo apt-get install -y postgresql-client
-          pg_isready -h localhost -p 5432 -U postgres
+      # - name: Wait for PostgreSQL
+      #   run: |
+      #     sudo apt-get install -y postgresql-client
+      #     pg_isready -h localhost -p 5432 -U postgres
       
       - name: Install dependencies
         run: npm install
@@ -78,10 +79,11 @@ jobs:
         
       - name: Drop PostgreSQL
         run: |
-          sudo -u postgres psql -c "DROP DATABASE $DB_NAME;"
-          sudo -u postgres psql -c "DROP USER $DB_USER;"
+          sudo -u $DB_USER_ORIG psql -c "DROP DATABASE $DB_NAME;"
+          sudo -u $DB_USER_ORIG psql -c "DROP USER $DB_USER;"
         env:
           DB_USER: ${{ secrets.DB_USER }}
+          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
           DB_NAME: ${{ secrets.DB_NAME }}
         
       # - name: Execute 1 for failure

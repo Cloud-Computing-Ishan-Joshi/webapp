@@ -32,14 +32,14 @@ jobs:
           sudo systemctl start postgresql
           sudo systemctl enable postgresql
           sudo systemctl status postgresql
-          # replace ident to scram-sha-256
-          sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
-          # uncomment listen_addresses
-          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
-          # uncomment port
-          sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
-          sudo systemctl restart postgresql
-          sudo systemctl status postgresql
+          # # replace ident to scram-sha-256
+          # sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
+          # # uncomment listen_addresses
+          # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
+          # # uncomment port
+          # sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
+          # sudo systemctl restart postgresql
+          # sudo systemctl status postgresql
           sudo su - postgres -c "psql -c \"CREATE DATABASE ${{env.DB_NAME}};\""
           sudo su - postgres -c "psql -c \"CREATE USER ${{env.DB_USER}} WITH PASSWORD '${{env.DB_PASSWORD}}';\""
           sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${{env.DB_NAME}} TO ${{env.DB_USER}};\""

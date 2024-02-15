@@ -6,16 +6,22 @@ const db = require('../../database/db');
 
 beforeEach(async() => {
     jest.resetModules();
-    await db.authenticate().then(() => {
-        console.log('Connection has been established successfully for User test.');
-    }).catch(err => {
-        console.error('Unable to connect to the database:');
-    });
-    await User.sync().then(() => {
-        console.log('User model synchronized successfully for User test.');
-    }).catch(err => {
-        console.error('Error synchronizing user model for User test.');
-    });
+    await db.authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.');
+            return db.sync();
+        })
+        .then(() => {
+            console.log('Database & tables created!');
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err);
+        });
+    // await User.sync({ force: true }).then(() => {
+    //     console.log('User model synchronized successfully for User test.');
+    // }).catch(err => {
+    //     console.error('Error synchronizing user model for User test.');
+    // });
 });
 
 const first_name = String(faker.name.firstName());

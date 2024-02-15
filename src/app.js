@@ -13,7 +13,8 @@ let syncrun = false;
 const InitRun = async() => {
     try {
         await db.authenticate();
-        await User.sync();
+        await db.sync();
+        await User.sync({ alter: true });
         syncrun = true;
     } catch (error) {
         console.log('Error: ', error);

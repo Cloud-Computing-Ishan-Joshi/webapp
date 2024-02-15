@@ -5,12 +5,14 @@ const healthz = require('./healthz/routes/healthz');
 const user_routes = require('./user/routes/user_routes');
 const handle_body = require('./user/utils/handle_errors');
 const db = require('./database/db');
+const User = require('./user/model/user');
 
 try {
     db.authenticate()
         .then(() => {
             console.log('Connection has been established successfully.');
-            return db.sync();
+            db.sync();
+            User.sync();
         })
         .then(() => {
             console.log('Database & tables created!');

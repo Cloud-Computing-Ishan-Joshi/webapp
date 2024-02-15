@@ -16,22 +16,6 @@ jobs:
       matrix:
         # This sub-keyword defines the Node.js version to use for the job
         node-version: [18.x]
-    # services:
-    #   postgres:
-    #     image: postgres:16
-    #     env:
-    #       POSTGRES_DB: postgres
-    #       POSTGRES_USER: ${{ secrets.DB_USER }}
-    #       POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-    #       POSTGRES_PORT: 5432
-    #     ports:
-    #       - 5432:5432
-    #     options: >-
-    #       --health-cmd pg_isready
-    #       --health-interval 10s
-    #       --health-timeout 5s
-    #       --health-retries 5
-
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -41,90 +25,29 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      # - name: Setup PostgreSQL
-      #   run: |
-      #     sudo apt-get -yqq install postgresql
-      #     sudo systemctl start postgresql
-      #     sudo systemctl enable postgresql
-      #     sudo systemctl status postgresql
-      #     sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
-      #     sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
-      #     # replace ident to scram-sha-256
-      #     sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
-      #     sudo systemctl restart postgresql
-      #     sudo systemctl status postgresql
-      #     # psql -U $DB_USER_ORIG -c "\l"
-      #     # psql -U $DB_USER_ORIG -c "CREATE DATABASE $DB_NAME;"
-      #     # psql -U $DB_USER_ORIG -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
-      #     # psql -U $DB_USER_ORIG -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-      #     # sudo su - postgres -c "psql -c \"CREATE DATABASE $DB_NAME;\""
-      #     # sudo su - postgres -c "psql -c \"CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';\""
-      #     # sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;\""
-      #     sudo su - postgres -c "psql -c \"CREATE DATABASE \\\"$DB_NAME\\\";\""
-      #     sudo su - postgres -c "psql -c \"CREATE USER \\\"$DB_USER\\\" WITH PASSWORD '\\\"$DB_PASSWORD\\\"';\""
-      #     sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE \\\"$DB_NAME\\\" TO \\\"$DB_USER\\\";\""
-      - uses: actions/checkout@v2
-      - name: Setup PostgreSQL
-        uses: tj-actions/install-postgresql@v2
-        with:
-          postgresql-version: 15
-      
-      - name: Create PostgreSQL
+      - name: Setup MySQL
         run: |
-          sudo systemctl start postgresql
-          sudo systemctl enable postgresql
-          sudo systemctl status postgresql
-          # replace ident to scram-sha-256
-          sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
-          # uncomment listen_addresses
-          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
-          # uncomment port
-          sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
-          sudo systemctl restart postgresql
-          sudo systemctl status postgresql
-          sudo su - postgres -c "psql -c \"CREATE DATABASE ${{env.DB_NAME}};\""
-          sudo su - postgres -c "psql -c \"CREATE USER ${{env.DB_USER}} WITH PASSWORD '${{env.DB_PASSWORD}}';\""
-          sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${{env.DB_NAME}} TO ${{env.DB_USER}};\""
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_NAME: ${{ secrets.DB_NAME }}
+          sudo /etc/init.d/mysql start
+          mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "CREATE DATABASE ${{ secrets.DB_NAME }};"
+    
 
-
-      # - name: Wait for PostgreSQL
-      #   run: |
-      #     sudo apt-get install -y postgresql-client
-      #     pg_isready -h localhost -p 5432 -U postgres
-      
       - name: Install dependencies
         run: npm install
       
       - name: Run Healthz test
         run: |
-          systemctl status postgresql
           npm run test:cli
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
-          PORT: ${{ job.services.postgres.ports[5432] }}
+          PORT: ${{ job.services.postgres.ports[3306] }}
 
           NODE_ENV: test
-          DB_NAME_TEST: postgres
+          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
           # DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
           # LOGGER: ${{ secrets.LOGGER }}
-        
-      - name: Drop PostgreSQL
-        run: |
-          sudo -u $DB_USER_ORIG psql -c "DROP DATABASE $DB_NAME;"
-          sudo -u $DB_USER_ORIG psql -c "DROP USER $DB_USER;"
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
-          DB_NAME: ${{ secrets.DB_NAME }}
-        
-      # - name: Execute 1 for failure
-      #   if: failure()
-      #   run: exit 1
+
+      - name: Drop DB
+        run: mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "DROP DATABASE ${{ secrets.DB_NAME}};"

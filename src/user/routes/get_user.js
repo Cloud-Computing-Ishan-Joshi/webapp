@@ -16,6 +16,7 @@ const db = require('../../database/db');
 
 router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');
+    console.log(req.body);
     try {
         const user = await User.findOne({
             where: {
@@ -23,11 +24,12 @@ router.get('/self', auth, validate_body, async(req, res) => {
             }
         });
         if (user) {
-            return res.status(200).end(user);
+            return res.status(200).send(user);
         } else {
             return res.status(403).end();
         }
     } catch (err) {
+        console.log(err);
         return res.status(500).end();
     }
 });

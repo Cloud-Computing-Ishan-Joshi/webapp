@@ -10,7 +10,9 @@ const User = require('../model/user');
 // }
 async function verifyAuth(req, res, next) {
     res.set('cache-control', 'no-cache');
+    console.log(req.headers.authorization);
     const auth = basicAuth(req);
+    console.log(auth);
     if (!auth || !auth.name || !auth.pass) {
         return res.status(401).end();
     }

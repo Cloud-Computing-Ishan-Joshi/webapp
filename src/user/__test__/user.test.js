@@ -44,6 +44,7 @@ describe('User endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
+            throw err;
         }
         // const response = await request(app).post('/v1/user').send(request_body);
         // expect(response.statusCode).toBe(201);
@@ -61,6 +62,7 @@ describe('User endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
+            throw err;
         }
         // const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
         // expect(response.statusCode).toBe(200);
@@ -74,6 +76,7 @@ describe('User endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
+            throw err;
         }
         // const response = await request(app).get('/v1/user/self');
         // expect(response.statusCode).toBe(401);
@@ -95,6 +98,7 @@ describe('User endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
+            throw err;
         }
         // const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
         // expect(response.statusCode).toBe(204);
@@ -114,6 +118,7 @@ describe('User endpoint', () => {
             expect(response.body.last_name).toBe(updated_last_name);
         } catch (err) {
             console.log(err);
+            throw err;
         }
         // const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
         // expect(response.statusCode).toBe(200);

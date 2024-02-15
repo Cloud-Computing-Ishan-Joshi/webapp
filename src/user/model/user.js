@@ -46,6 +46,12 @@ User.prototype.toJSON = function() {
     return values;
 }
 
+User.sync({ force: false }).then(() => {
+    // if (process.env.NODE_ENV !== 'test') {
+    console.log('User model synchronized successfully for Auth middleware');
+    // }
+});
+
 User.prototype.comparePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
 };

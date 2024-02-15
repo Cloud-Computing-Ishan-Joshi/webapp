@@ -35,28 +35,28 @@ const start = async() => {
     }
 };
 
-try {
-    db.authenticate()
-        .then(() => {
-            console.log('Connection has been established successfully.');
-            db.sync({ alter: true }).then(() => {
-                // if (process.env.NODE_ENV !== 'test') {
-                console.log('Database synchronized successfully');
-                // }
-            }).catch(err => {
-                console.log('Error synchronizing database');
-            });
-        })
-        .then(() => {
-            console.log('Database & tables created!');
-        })
-        .catch(err => {
-            console.error('Unable to connect to the database:', err);
-        });
-    // console.log('Connected to database');
-} catch (err) {
-    console.log(`Database connection failed`);
-}
+// try {
+//     db.authenticate()
+//         .then(() => {
+//             console.log('Connection has been established successfully.');
+//             db.sync({ alter: true }).then(() => {
+//                 // if (process.env.NODE_ENV !== 'test') {
+//                 console.log('Database synchronized successfully');
+//                 // }
+//             }).catch(err => {
+//                 console.log('Error synchronizing database');
+//             });
+//         })
+//         .then(() => {
+//             console.log('Database & tables created!');
+//         })
+//         .catch(err => {
+//             console.error('Unable to connect to the database:', err);
+//         });
+//     // console.log('Connected to database');
+// } catch (err) {
+//     console.log(`Database connection failed`);
+// }
 
 const server = http.createServer(app);
 

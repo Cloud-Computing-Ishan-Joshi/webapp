@@ -34,6 +34,8 @@ router.post('/', validate_body, validate, async(req, res) => {
     }
     try {
         // check if the user already exists
+
+
         await db.models.User.findOne({
             where: {
                 username: req.body.username

@@ -17,9 +17,9 @@ require('dotenv').config();
 //     });
 // });
 
-beforeEach(async() => {
-    jest.resetModules();
-});
+// beforeEach(async() => {
+//     jest.resetModules();
+// });
 
 
 
@@ -127,12 +127,12 @@ describe('User endpoint', () => {
         // expect(response.body.last_name).toBe(updated_last_name);
     });
 
-    afterEach(async() => {
-        jest.restoreAllMocks();
-    });
+    // afterEach(async() => {
+    //     jest.restoreAllMocks();
+    // });
 
-    afterAll(async() => {
-        await db.close();
-    });
+    // afterAll(async() => {
+    //     await db.close();
+    // });
 
 });

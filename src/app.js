@@ -5,6 +5,18 @@ const healthz = require('./healthz/routes/healthz');
 const user_routes = require('./user/routes/user_routes');
 const handle_body = require('./user/utils/handle_errors');
 
+const User = require('./user/model/user');
+
+try {
+    User.sync({ alter: true }).then(() => {
+        if (process.env.NODE_ENV !== 'test') {
+            console.log('User model synchronized successfully for Auth middleware');
+        }
+    });
+} catch (error) {
+    console.log('Error synchronizing user model');
+}
+
 const app = express();
 
 app.use(bodyParser.json({

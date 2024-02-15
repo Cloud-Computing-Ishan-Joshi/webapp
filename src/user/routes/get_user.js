@@ -6,6 +6,11 @@ const User = require('../model/user');
 const sync = require('../middlewares/sync');
 const router = express.Router();
 
+User.sync({ alter: true }).then(() => {
+    if (process.env.NODE_ENV !== 'test') {
+        console.log('User model synchronized successfully for Auth middleware');
+    }
+});
 // router.use(auth);
 
 router.get('/self', auth, validate_body, sync, async(req, res) => {

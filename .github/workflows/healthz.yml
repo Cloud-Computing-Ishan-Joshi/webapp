@@ -28,7 +28,6 @@ jobs:
 
       - name: Install Postgres and Config
         run: |
-          sudo apt-get update
           sudo apt-get install postgresql postgresql-contrib
           sudo systemctl start postgresql
           sudo systemctl enable postgresql

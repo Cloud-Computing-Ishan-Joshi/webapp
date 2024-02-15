@@ -2,7 +2,7 @@ function handle_body(req, res, buf, encoding) {
     try {
         JSON.parse(buf);
     } catch (e) {
-        res.status(400).send();
+        return res.status(400).end();
     }
 }
 

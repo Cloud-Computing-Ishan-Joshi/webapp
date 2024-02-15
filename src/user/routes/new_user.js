@@ -12,7 +12,6 @@ const validate_body = require('../middlewares/validate_body');
 
 const router = express.Router();
 
-// router.use(validate_body);
 
 const validate = [
     check('first_name').exists().isString(),
@@ -27,27 +26,26 @@ router.post('/', validate_body, validate, async(req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).end();
     }
-    try {
-        // check if the user already exists
-        const userExists = await User.findOne({
-            where: {
-                username: req.body.username
-            }
-        });
-        if (userExists) {
+    User.findOne({
+        where: {
+            username: req.body.username
+        }
+    }).then((user) => {
+        if (user) {
             return res.status(400).end();
         }
-        const user = await User.create(req.body);
-        // const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
-        res.set('Cache-Control', 'no-cache');
-        // res.set('Authorization', `Bearer ${token}`);
-        return res.status(201).send(user);
-    } catch (err) {
+    }).catch((err) => {
         if (process.env.NODE_ENV !== 'test') {
-            console.log('Error creating user');
+            console.log('Error finding user');
             console.log(err);
         }
-        return res.status(400).end();
+        return res.status(500).end();
+    });
+    try {
+        const user = await User.create(req.body);
+        return res.status(201).send(user);
+    } catch (err) {
+        return res.status(500).end();
     }
 });
 

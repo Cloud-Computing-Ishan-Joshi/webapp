@@ -16,7 +16,7 @@ const InitRun = async() => {
             console.log('Error synchronizing database');
         });
     } catch (err) {
-        console.log(`Database connection failed`);
+        console.log(err);
     }
 }
 

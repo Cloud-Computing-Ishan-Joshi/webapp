@@ -41,29 +41,39 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      # - name: Setup PostgreSQL
+      #   run: |
+      #     sudo apt-get -yqq install postgresql
+      #     sudo systemctl start postgresql
+      #     sudo systemctl enable postgresql
+      #     sudo systemctl status postgresql
+      #     sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
+      #     sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
+      #     # replace ident to scram-sha-256
+      #     sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
+      #     sudo systemctl restart postgresql
+      #     sudo systemctl status postgresql
+      #     # psql -U $DB_USER_ORIG -c "\l"
+      #     # psql -U $DB_USER_ORIG -c "CREATE DATABASE $DB_NAME;"
+      #     # psql -U $DB_USER_ORIG -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
+      #     # psql -U $DB_USER_ORIG -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
+      #     # sudo su - postgres -c "psql -c \"CREATE DATABASE $DB_NAME;\""
+      #     # sudo su - postgres -c "psql -c \"CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';\""
+      #     # sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;\""
+      #     sudo su - postgres -c "psql -c \"CREATE DATABASE \\\"$DB_NAME\\\";\""
+      #     sudo su - postgres -c "psql -c \"CREATE USER \\\"$DB_USER\\\" WITH PASSWORD '\\\"$DB_PASSWORD\\\"';\""
+      #     sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE \\\"$DB_NAME\\\" TO \\\"$DB_USER\\\";\""
+      - uses: actions/checkout@v2
       - name: Setup PostgreSQL
+        uses: tj-actions/install-postgresql@v2
+        with:
+          postgresql-version: 16
+      
+      - name: Create PostgreSQL
         run: |
-          sudo apt-get -yqq install postgresql
-          sudo systemctl start postgresql
-          sudo systemctl enable postgresql
-          sudo systemctl status postgresql
-          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
-          sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
-          # replace ident to scram-sha-256
-          sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
-          sudo systemctl restart postgresql
-          sudo systemctl status postgresql
-          # psql -U $DB_USER_ORIG -c "\l"
-          # psql -U $DB_USER_ORIG -c "CREATE DATABASE $DB_NAME;"
-          # psql -U $DB_USER_ORIG -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"
-          # psql -U $DB_USER_ORIG -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
-          # sudo su - postgres -c "psql -c \"CREATE DATABASE $DB_NAME;\""
-          # sudo su - postgres -c "psql -c \"CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';\""
-          # sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;\""
-          sudo su - postgres -c "psql -c \"CREATE DATABASE \\\"$DB_NAME\\\";\""
-          sudo su - postgres -c "psql -c \"CREATE USER \\\"$DB_USER\\\" WITH PASSWORD '\\\"$DB_PASSWORD\\\"';\""
-          sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE \\\"$DB_NAME\\\" TO \\\"$DB_USER\\\";\""
-
+          sudo -u $DB_USER_ORIG psql -c "CREATE DATABASE $DB_NAME;"
+          sudo -u $DB_USER_ORIG psql -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
+          sudo -u $DB_USER_ORIG psql -c "GRANT ALL PRIVILEGES ON DATABASE $DB_NAME TO $DB_USER;"
         env:
           DB_USER: ${{ secrets.DB_USER }}
           DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}

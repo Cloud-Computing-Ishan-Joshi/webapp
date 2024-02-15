@@ -20,7 +20,8 @@ const User = db.define('User', {
         is: {
             args: /^(.+)@(.+)\.(.+)$/,
             msg: 'Email format is invalid',
-        }
+        },
+        unique: true
     }
 }, {
     hooks: {

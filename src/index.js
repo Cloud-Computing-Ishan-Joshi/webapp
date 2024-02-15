@@ -33,24 +33,6 @@ const start = async() => {
         console.log('NODE_ENV not found');
         process.exit(1);
     }
-
-    try {
-        await sequelize.authenticate()
-            .then(() => {
-                console.log('Connection has been established successfully.');
-                return sequelize.sync();
-            })
-            .then(() => {
-                console.log('Database & tables created!');
-                app.listen(3000, () => console.log('Server is running on port 3000'));
-            })
-            .catch(err => {
-                console.error('Unable to connect to the database:', err);
-            });
-        // console.log('Connected to database');
-    } catch (err) {
-        console.log(`Database connection failed`);
-    }
 };
 
 const server = http.createServer(app);

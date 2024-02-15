@@ -4,18 +4,24 @@ const bodyParser = require('body-parser');
 const healthz = require('./healthz/routes/healthz');
 const user_routes = require('./user/routes/user_routes');
 const handle_body = require('./user/utils/handle_errors');
+const db = require('./database/db');
 
-// const User = require('./user/model/user');
-
-// try {
-//     User.sync({ alter: true }).then(() => {
-//         if (process.env.NODE_ENV !== 'test') {
-//             console.log('User model synchronized successfully for Auth middleware');
-//         }
-//     });
-// } catch (error) {
-//     console.log('Error synchronizing user model');
-// }
+try {
+    db.authenticate()
+        .then(() => {
+            console.log('Connection has been established successfully.');
+            return db.sync();
+        })
+        .then(() => {
+            console.log('Database & tables created!');
+        })
+        .catch(err => {
+            console.error('Unable to connect to the database:', err);
+        });
+    // console.log('Connected to database');
+} catch (err) {
+    console.log(`Database connection failed`);
+}
 
 const app = express();
 

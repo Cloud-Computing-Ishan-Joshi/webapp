@@ -29,6 +29,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         return res.status(400).send();
     }
     try {
+        await User.sync();
         const user = await User.findOne({
             where: {
                 username: req.user.username

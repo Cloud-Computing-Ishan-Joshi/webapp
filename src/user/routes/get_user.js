@@ -18,6 +18,7 @@ router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');
     console.log(req.body);
     try {
+        await User.sync();
         const user = await User.findOne({
             where: {
                 username: req.user.username

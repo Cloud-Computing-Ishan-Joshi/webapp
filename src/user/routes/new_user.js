@@ -36,6 +36,7 @@ router.post('/', validate_body, validate, async(req, res) => {
     try {
         console.log('****************** Creating user ************************');
         // check if the user already exists
+        await User.sync();
         const user_check = await User.findOne({
             where: {
                 username: req.body.username

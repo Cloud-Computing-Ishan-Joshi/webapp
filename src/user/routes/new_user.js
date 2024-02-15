@@ -3,12 +3,8 @@ const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 const User = require('../../user/model/user');
 
-User.sync({ alter: true }).then(() => {
-    if (process.env.NODE_ENV !== 'test') {
-        console.log('User model synchronized successfully');
-    }
-});
 const validate_body = require('../middlewares/validate_body');
+const sync = require('../middlewares/sync');
 
 const router = express.Router();
 
@@ -21,7 +17,7 @@ const validate = [
     check('username').isEmail().withMessage('Email format is invalid'),
 ];
 
-router.post('/', validate_body, validate, async(req, res) => {
+router.post('/', validate_body, validate, sync, async(req, res) => {
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

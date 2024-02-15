@@ -2,10 +2,11 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 
-const db = require('../../database/db');
+// const db = require('../../database/db');
 const validate_body = require('../middlewares/validate_body');
 const validate_method = require('../middlewares/validate_request');
 const auth = require('../middlewares/auth');
+const User = require('../model/user');
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         return res.status(400).send();
     }
     try {
-        const user = await db.models.User.findOne({
+        const user = await User.findOne({
             where: {
                 username: req.user.username
             }

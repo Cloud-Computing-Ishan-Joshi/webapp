@@ -2,7 +2,7 @@
 
 Cloud Computing Assignments
 
-# Assignment #02
+# Assignment #03
 
 Name: Ishan Subodh Joshi
 
@@ -39,6 +39,21 @@ NUID: 002836254
 5. Get user information
    1. As a user, I want to get my account information. Response payload should return all fields for the user except for password.
 
+
+## Web Application - Integration Tests[¶](https://spring2024.csye6225.cloud/assignments/03/#web-application-integration-tests "Permanent link")
+
+Danger
+
+Do not implement tests using `curl` or `postman`. You will need to execute the tests as part of pull requests and add them to status check.
+
+1. Implement integration (and not unit) tests for the `/v1/user`
+   endpoint with a new GitHub Actions workflow. Do not delete workflow
+   from previous assignments as it must continue to function in parallel to
+   the new one.
+2. Test 1 - Create an account, and using the GET call, validate account exists.
+3. Test 2 - Update the account and using the GET call, validate the account was updated.
+4. This will require your GitHub action to install and setup an actual `MySQL` and `PostgreSQL` instance and provide configuration to the application to connect to it.
+
 ### To Install requirements
 
 ```bash
@@ -48,7 +63,7 @@ npm i
 ### Create .env file in Project folder
 
 ```shell
-DB_NAME=healthz 
+DB_NAME=postgres
 DB_USER=postgres
 DB_PASSWORD=<password>
 DB_HOST=localhost

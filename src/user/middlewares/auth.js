@@ -2,11 +2,11 @@ const basicAuth = require('basic-auth');
 const User = require('../model/user');
 
 // if (process.env.NODE_ENV !== 'test') {
-User.sync().then(() => {
-    if (process.env.NODE_ENV !== 'test') {
-        console.log('User model synchronized successfully for Auth middleware');
-    }
-});
+// User.sync().then(() => {
+//     if (process.env.NODE_ENV !== 'test') {
+//         console.log('User model synchronized successfully for Auth middleware');
+//     }
+// });
 // }
 async function verifyAuth(req, res, next) {
     res.set('cache-control', 'no-cache');

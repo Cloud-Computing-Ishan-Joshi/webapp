@@ -10,15 +10,7 @@ jobs:
     name: Node
     runs-on: ubuntu-latest
 
-    env:
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      DB_HOST: ${{ secrets.DB_HOST }}
-      PORT: ${{ secrets.PORT}}
-      NODE_ENV: test
-      DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
-
+    
     # This keyword is used to define the build strategy for your workflow. In this case, it's specifying a matrix strategy
     strategy:
       # This sub-keyword defines a matrix build strategy, which allows you to run your job in multiple configurations
@@ -49,17 +41,17 @@ jobs:
       - name: Run Healthz test
         run: |
           npm run test:cli
-        # env:
-        #   DB_NAME: ${{ secrets.DB_NAME }}
-        #   DB_USER: ${{ secrets.DB_USER }}
-        #   DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        #   DB_HOST: ${{ secrets.DB_HOST }}
-        #   PORT: ${{ secrets.PORT}}
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          PORT: ${{ secrets.PORT}}
 
-        #   NODE_ENV: test
-        #   DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
-        #   # DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
-        #   # LOGGER: ${{ secrets.LOGGER }}
+          NODE_ENV: test
+          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
+          # DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
+          # LOGGER: ${{ secrets.LOGGER }}
 
       - name: Drop DB
         run: mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "DROP DATABASE ${{ secrets.DB_NAME}};"

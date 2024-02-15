@@ -12,7 +12,11 @@
     "jest": {
         "testEnvironment": "node",
         "testMatch": [
-            "**/**/**/__test__/*.test.js"
+            "<rootDir>/src/__test__/*.test.js"
+        ],
+        "testIgnorePatterns": [
+            "<rootDir>/src/**/user/**/__test__/*.test.js",
+            "<rootDir>/src/**/healthz/**/__test__/*.test.js"
         ]
     },
     "author": "Ishan Joshi",

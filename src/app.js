@@ -23,6 +23,26 @@ const InitRun = async() => {
 InitRun();
 
 
+const db = require('./database/db');
+const User = require('./user/model/user');
+
+let syncrun = false;
+
+const InitRun = async() => {
+    try {
+        await db.authenticate();
+        await User.sync({ alter: true });
+        syncrun = true;
+    } catch (error) {
+        console.log('Error: ', error);
+    }
+};
+
+if (!syncrun) {
+    InitRun();
+}
+
+
 const app = express();
 
 app.use(bodyParser.json({
@@ -38,7 +58,7 @@ app.all('*', (req, res) => {
         console.log('Invalid request');
     }
     res.set('Cache-Control', 'no-cache');
-    res.status(404).send();
+    return res.status(404).end();
 });
 
 

@@ -13,6 +13,8 @@ const User = require('../model/user');
 //     }
 // });
 
+const User = require('../model/user');
+
 const router = express.Router();
 
 const validate = [
@@ -23,7 +25,7 @@ const validate = [
 ];
 
 router.put('/self', validate_method, validate_body, auth, validate, async(req, res) => {
-    // res.set('cache-control', 'no-cache');
+    res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty() || req.body.username) {
         return res.status(400).send();

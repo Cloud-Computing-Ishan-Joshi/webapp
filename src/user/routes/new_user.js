@@ -10,13 +10,6 @@ const User = require('../model/user');
 
 const router = express.Router();
 
-// User.sync().then(() => {
-//     if (process.env.NODE_ENV !== 'test') {
-//         console.log('User model synchronized successfully for Auth middleware - New User Route');
-//     }
-// });
-
-// router.use(validate_body);
 
 const validate = [
     check('first_name').exists().isString(),
@@ -57,10 +50,15 @@ router.post('/', validate_body, validate, async(req, res) => {
         return res.status(201).send(user);
     } catch (err) {
         if (process.env.NODE_ENV !== 'test') {
-            console.log('Error creating user');
+            console.log('Error finding user');
             console.log(err);
         }
-        console.log("****************** Error creating user ************************");
+        return res.status(500).end();
+    });
+    try {
+        const user = await User.create(req.body);
+        return res.status(201).send(user);
+    } catch (err) {
         return res.status(500).end();
     }
 });

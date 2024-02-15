@@ -17,6 +17,8 @@ jobs:
       matrix:
         # This sub-keyword defines the Node.js version to use for the job
         node-version: [18.x]
+
+
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -26,14 +28,29 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Setup MySQL
+
+      - name: Install Postgres and Config
         run: |
-          sudo /etc/init.d/mysql start
-          sudo systemctl enable mysql
-          mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "CREATE DATABASE ${{ secrets.DB_NAME }};"
-          mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "show databases;"
-          
-    
+          sudo apt-get install postgresql postgresql-contrib
+          sudo systemctl start postgresql
+          sudo systemctl enable postgresql
+          sudo systemctl status postgresql
+          # # replace ident to scram-sha-256
+          # sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
+          # # uncomment listen_addresses
+          # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
+          # # uncomment port
+          # sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
+          # sudo systemctl restart postgresql
+          # sudo systemctl status postgresql
+          sudo su - postgres -c "psql -c \"CREATE DATABASE ${{env.DB_NAME}};\""
+          sudo su - postgres -c "psql -c \"CREATE USER ${{env.DB_USER}} WITH PASSWORD '${{env.DB_PASSWORD}}';\""
+          sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${{env.DB_NAME}} TO ${{env.DB_USER}};\""
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Install dependencies
         run: npm install
@@ -46,12 +63,10 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
-          PORT: ${{ secrets.PORT}}
-
+          
+          PORT: ${{ secrets.PORT }}
           NODE_ENV: test
-          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
-          # DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
-          # LOGGER: ${{ secrets.LOGGER }}
+
 
       - name: Drop DB
         run: mysql -h ${{secrets.DB_HOST}} --port 3306 -u${{secrets.DB_USER}} -p${{secrets.DB_PASSWORD}} -e "DROP DATABASE ${{ secrets.DB_NAME}};"

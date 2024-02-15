@@ -7,12 +7,6 @@ const sync = require('../middlewares/sync');
 const router = express.Router();
 const db = require('../../database/db');
 
-// User.sync().then(() => {
-//     if (process.env.NODE_ENV !== 'test') {
-//         console.log('User model synchronized successfully for Auth middleware - Get User Details');
-//     }
-// });
-// router.use(auth);
 
 router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');

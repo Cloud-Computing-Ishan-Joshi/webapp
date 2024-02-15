@@ -22,7 +22,6 @@ require('dotenv').config();
 // });
 
 
-
 describe('User endpoint', () => {
     const first_name = "Test";
     const last_name = "User";
@@ -46,9 +45,6 @@ describe('User endpoint', () => {
             console.log(err);
             throw err;
         }
-        // const response = await request(app).post('/v1/user').send(request_body);
-        // expect(response.statusCode).toBe(201);
-        // expect(response.headers['cache-control']).toBe('no-cache');
     });
 
     test('should return 200 Status code and User', async() => {
@@ -98,17 +94,13 @@ describe('User endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
-            throw err;
         }
-        // const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
-        // expect(response.statusCode).toBe(204);
-        // expect(response.headers['cache-control']).toBe('no-cache');
     });
 
-    test('should return 200 Status code and updated user after update', async() => {
+    test('should return 200 Status code and User after Update', async() => {
         const basic_auth = {
-            "username": username,
-            "password": password
+            username: username,
+            password: password
         };
         try {
             const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
@@ -126,13 +118,4 @@ describe('User endpoint', () => {
         // expect(response.body.first_name).toBe(updated_first_name);
         // expect(response.body.last_name).toBe(updated_last_name);
     });
-
-    // afterEach(async() => {
-    //     jest.restoreAllMocks();
-    // });
-
-    // afterAll(async() => {
-    //     await db.close();
-    // });
-
 });

@@ -10,7 +10,7 @@ const router = express.Router();
 
 User.sync({ alter: true }).then(() => {
     if (process.env.NODE_ENV !== 'test') {
-        console.log('User model synchronized successfully for Auth middleware');
+        console.log('User model synchronized successfully for Auth middleware - New User Route');
     }
 });
 

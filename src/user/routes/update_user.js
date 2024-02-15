@@ -7,6 +7,12 @@ const validate_method = require('../middlewares/validate_request');
 const auth = require('../middlewares/auth');
 const User = require('../model/user');
 
+User.sync({ alter: true }).then(() => {
+    if (process.env.NODE_ENV !== 'test') {
+        console.log('User model synchronized successfully for Auth middleware - Update User Details');
+    }
+});
+
 const router = express.Router();
 
 const validate = [

@@ -12,7 +12,6 @@ try {
         .then(() => {
             console.log('Connection has been established successfully.');
             db.sync();
-            User.sync();
         })
         .then(() => {
             console.log('Database & tables created!');

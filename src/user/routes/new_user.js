@@ -1,10 +1,11 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
-const User = require('../../user/model/user');
-
+// const User = require('../../user/model/user');
+const db = require('../../database/db');
 const validate_body = require('../middlewares/validate_body');
 const sync = require('../middlewares/sync');
+// const db = require('../../database/db');
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ router.post('/', validate_body, validate, async(req, res) => {
     }
     try {
         // check if the user already exists
-        await User.findOne({
+        await db.models.User.findOne({
             where: {
                 username: req.body.username
             }
@@ -47,7 +48,7 @@ router.post('/', validate_body, validate, async(req, res) => {
         //     log('****************User already exists*****************');
         //     return res.status(400).end();
         // }
-        const user = await User.create(req.body);
+        const user = await db.models.User.create(req.body);
         // const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
         // res.set('Cache-Control', 'no-cache');
         // res.set('Authorization', `Bearer ${token}`);

@@ -5,7 +5,23 @@ const healthz = require('./healthz/routes/healthz');
 const user_routes = require('./user/routes/user_routes');
 const handle_body = require('./user/utils/handle_errors');
 const db = require('./database/db');
-// const User = require('./user/model/user');
+const User = require('./user/model/user');
+
+const InitRun = async() => {
+    try {
+        await db.authenticate()
+        await User.sync({ alter: true }).then(() => {
+            console.log('User model synchronized successfully for Auth middleware');
+        }).catch(err => {
+            console.log('Error synchronizing database');
+        });
+    } catch (err) {
+        console.log(`Database connection failed`);
+    }
+}
+
+InitRun();
+
 
 const app = express();
 

@@ -36,27 +36,24 @@ router.post('/', validate_body, validate, async(req, res) => {
     try {
         console.log('****************** Creating user ************************');
         // check if the user already exists
-        await User.sync();
-        const user_check = await User.findOne({
-            where: {
-                username: req.body.username
+        try {
+            const userExists = await User.findOne({
+                where: {
+                    username: req.body.username
+                }
+            });
+            if (userExists) {
+                return res.status(400).end();
             }
-        });
-        console.log('****************** User check ************************');
-        console.log(user_check);
-        console.log('****************** User check ************************');
-        if (user_check) {
-            return res.status(400).end();
+        } catch (err) {
+            if (process.env.NODE_ENV !== 'test') {
+                console.log('Error creating user');
+                console.log(err);
+            }
+            return res.status(500).end();
         }
-        console.log('****************User does not exist*****************');
-        // if (userExists) {
-        //     log('****************User already exists*****************');
-        //     return res.status(400).end();
-        // }
         const user = await User.create(req.body);
-        // const token = jwt.sign({ userId: user.id }, jwtSecret, { expiresIn: '1h' });
-        // res.set('Cache-Control', 'no-cache');
-        // res.set('Authorization', `Bearer ${token}`);
+        res.set('cache-control', 'no-cache');
         return res.status(201).send(user);
     } catch (err) {
         if (process.env.NODE_ENV !== 'test') {

@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../app');
-const faker = require('faker');
+// const faker = require('faker');
 const db = require('../../database/db');
 require('dotenv').config();
 
@@ -24,12 +24,12 @@ require('dotenv').config();
 
 
 describe('User endpoint', () => {
-    const first_name = String(faker.name.firstName());
-    const last_name = String(faker.name.lastName());
-    const username = String(faker.internet.email());
+    const first_name = "Test";
+    const last_name = "User";
+    const username = "Teqqst@gmail.com"
     const password = "test@12345";
-    const updated_first_name = String(faker.name.firstName());
-    const updated_last_name = String(faker.name.lastName());
+    const updated_first_name = "Updated Test"
+    const updated_last_name = "Updated User";
 
     test('should return 201 Status when user is created', async() => {
         const request_body = {

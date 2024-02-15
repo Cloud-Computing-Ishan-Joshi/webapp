@@ -5,13 +5,19 @@ const healthz = require('./healthz/routes/healthz');
 const user_routes = require('./user/routes/user_routes');
 const handle_body = require('./user/utils/handle_errors');
 const db = require('./database/db');
-const User = require('./user/model/user');
+// const User = require('./user/model/user');
 
 try {
     db.authenticate()
         .then(() => {
             console.log('Connection has been established successfully.');
-            db.sync();
+            db.sync().then(() => {
+                // if (process.env.NODE_ENV !== 'test') {
+                console.log('Database synchronized successfully');
+                // }
+            }).catch(err => {
+                console.log('Error synchronizing database');
+            });
         })
         .then(() => {
             console.log('Database & tables created!');

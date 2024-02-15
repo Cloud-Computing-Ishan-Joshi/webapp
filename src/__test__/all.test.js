@@ -10,7 +10,7 @@ describe('Healthz check endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     });
 
@@ -23,7 +23,8 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(400);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
+            // console.log('Error in request body');
         }
     });
 
@@ -33,7 +34,7 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(400);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     });
 
@@ -43,7 +44,7 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(404);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     });
 });
@@ -68,7 +69,7 @@ describe('User endpoint', () => {
             expect(response.statusCode).toBe(201);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     });
 
@@ -84,7 +85,7 @@ describe('User endpoint', () => {
             expect(response.body.last_name).toBe(last_name);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     });
 
@@ -102,7 +103,7 @@ describe('User endpoint', () => {
             expect(response.statusCode).toBe(204);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     });
 
@@ -118,7 +119,7 @@ describe('User endpoint', () => {
             expect(response.body.last_name).not.toBe(last_name_update);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     });
 });

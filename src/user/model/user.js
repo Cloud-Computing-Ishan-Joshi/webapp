@@ -29,6 +29,14 @@ const User = db.define('User', {
                 throw new Error('Username cannot be updated');
             }
         },
+        afterCreate: async(user, options) => {
+            await user.reload();
+            await user.save();
+        },
+        afterUpdate: async(user, options) => {
+            await user.reload();
+            await user.save();
+        }
     }
 });
 

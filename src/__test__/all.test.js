@@ -10,7 +10,7 @@ describe('Healthz check endpoint', () => {
             expect(response.headers['cache-control']).toBe('no-cache');
 
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     });
 
@@ -23,8 +23,7 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(400);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            // console.log(error);
-            // console.log('Error in request body');
+            console.log(error);
         }
     });
 
@@ -34,7 +33,7 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(400);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     });
 
@@ -44,19 +43,19 @@ describe('Healthz check endpoint', () => {
             expect(response.statusCode).toBe(404);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (error) {
-            // console.log(error);
+            console.log(error);
         }
     });
 });
 
-const first_name = faker.name.firstName();
-const last_name = faker.name.lastName();
-const username = faker.internet.email();
-const password = "test@12345";
-const first_name_update = faker.name.firstName();
-const last_name_update = faker.name.lastName();
 
 describe('User endpoint', () => {
+    const first_name = faker.name.firstName();
+    const last_name = faker.name.lastName();
+    const username = faker.internet.email();
+    const password = "test@12345";
+    const first_name_update = faker.name.firstName();
+    const last_name_update = faker.name.lastName();
     test('should return 201 Status when user is created', async() => {
         const request_body = {
             first_name: first_name,
@@ -69,7 +68,7 @@ describe('User endpoint', () => {
             expect(response.statusCode).toBe(201);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     });
 
@@ -85,7 +84,7 @@ describe('User endpoint', () => {
             expect(response.body.last_name).toBe(last_name);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     });
 
@@ -103,7 +102,7 @@ describe('User endpoint', () => {
             expect(response.statusCode).toBe(204);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     });
 
@@ -115,11 +114,11 @@ describe('User endpoint', () => {
         try {
             const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(200);
-            expect(response.body.first_name).not.toBe(first_name_update);
-            expect(response.body.last_name).not.toBe(last_name_update);
+            expect(response.body.first_name).toBe(first_name_update);
+            expect(response.body.last_name).toBe(last_name_update);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
-            // console.log(err);
+            console.log(err);
         }
     });
 });

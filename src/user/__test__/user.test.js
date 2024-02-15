@@ -1,6 +1,20 @@
 const request = require('supertest');
 const app = require('../../app');
 const faker = require('faker');
+const db = require('../../database/db');
+
+beforeAll(async() => {
+    await db.authenticate().then(() => {
+        console.log('Connection has been established successfully.');
+    }).catch(err => {
+        console.error('Unable to connect to the database:', err);
+    });
+    await db.sync({ alter: true }).then(() => {
+        console.log('Database synchronized successfully');
+    }).catch(err => {
+        console.log('Error synchronizing database');
+    });
+});
 
 beforeEach(async() => {
     jest.resetModules();
@@ -71,6 +85,10 @@ describe('User endpoint', () => {
 
     afterEach(async() => {
         jest.restoreAllMocks();
+    });
+
+    afterAll(async() => {
+        await db.close();
     });
 
 });

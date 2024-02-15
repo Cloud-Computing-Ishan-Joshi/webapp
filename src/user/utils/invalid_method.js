@@ -1,6 +1,6 @@
 function invalid_method(req, res) {
     res.set('Cache-Control', 'no-cache');
-    res.status(405).send();
+    return res.status(405).end();
 }
 
 module.exports = invalid_method;

@@ -16,20 +16,6 @@ jobs:
       matrix:
         # This sub-keyword defines the Node.js version to use for the job
         node-version: [18.x]
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: ${{ secrets.DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.DB_NAME }}
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     steps:
       - name: Check out code
@@ -39,6 +25,30 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Install Postgres and Config
+        run: |
+          sudo apt-get update
+          sudo apt-get install postgresql postgresql-contrib
+          sudo systemctl start postgresql
+          sudo systemctl enable postgresql
+          sudo systemctl status postgresql
+          # replace ident to scram-sha-256
+          sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
+          # uncomment listen_addresses
+          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
+          # uncomment port
+          sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
+          sudo systemctl restart postgresql
+          sudo systemctl status postgresql
+          sudo su - postgres -c "psql -c \"CREATE DATABASE ${{env.DB_NAME}};\""
+          sudo su - postgres -c "psql -c \"CREATE USER ${{env.DB_USER}} WITH PASSWORD '${{env.DB_PASSWORD}}';\""
+          sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${{env.DB_NAME}} TO ${{env.DB_USER}};\""
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
 
       - name: Install dependencies
         run: npm install
@@ -50,10 +60,8 @@ jobs:
           DB_USER: ${{ secrets.DB_USER }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_HOST: ${{ secrets.DB_HOST }}
-          PORT: ${{ secrets.DB_PORT }}
+          PORT: ${{ secrets.PORT }}
           NODE_ENV: test
-          DB_NAME_TEST: ${{ secrets.DB_NAME_TEST }}
-          DB_NAME_ORIG: ${{ secrets.DB_NAME_ORIG }}
 
         
       - name: Execute 1 for failure

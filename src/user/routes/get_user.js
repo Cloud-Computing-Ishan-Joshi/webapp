@@ -6,7 +6,6 @@ const validate_body = require('../middlewares/validate_body');
 
 const router = express.Router();
 
-// router.use(auth);
 
 router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');

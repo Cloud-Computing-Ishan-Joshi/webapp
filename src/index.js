@@ -1,6 +1,5 @@
 const http = require('http');
 const app = require('./app');
-const db = require('./database/db');
 
 const config = require('./config');
 
@@ -32,13 +31,6 @@ const start = async() => {
     if (!process.env.NODE_ENV) {
         console.log('NODE_ENV not found');
         process.exit(1);
-    }
-
-    try {
-        await db.sync();
-        console.log('Connected to database');
-    } catch (err) {
-        console.log(`Database connection failed`);
     }
 };
 

@@ -2,6 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const faker = require('faker');
 const db = require('../../database/db');
+require('dotenv').config();
 
 // beforeAll(async() => {
 //     await db.authenticate().then(() => {

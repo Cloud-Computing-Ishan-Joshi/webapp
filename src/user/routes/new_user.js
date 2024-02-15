@@ -8,11 +8,11 @@ const sync = require('../middlewares/sync');
 
 const router = express.Router();
 
-User.sync({ alter: true }).then(() => {
-    if (process.env.NODE_ENV !== 'test') {
-        console.log('User model synchronized successfully for Auth middleware - New User Route');
-    }
-});
+// User.sync().then(() => {
+//     if (process.env.NODE_ENV !== 'test') {
+//         console.log('User model synchronized successfully for Auth middleware - New User Route');
+//     }
+// });
 
 // router.use(validate_body);
 
@@ -23,7 +23,7 @@ const validate = [
     check('username').isEmail().withMessage('Email format is invalid'),
 ];
 
-router.post('/', validate_body, validate, sync, async(req, res) => {
+router.post('/', validate_body, validate, async(req, res) => {
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

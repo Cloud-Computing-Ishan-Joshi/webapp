@@ -6,14 +6,14 @@ const User = require('../model/user');
 const sync = require('../middlewares/sync');
 const router = express.Router();
 
-User.sync({ alter: true }).then(() => {
-    if (process.env.NODE_ENV !== 'test') {
-        console.log('User model synchronized successfully for Auth middleware - Get User Details');
-    }
-});
+// User.sync().then(() => {
+//     if (process.env.NODE_ENV !== 'test') {
+//         console.log('User model synchronized successfully for Auth middleware - Get User Details');
+//     }
+// });
 // router.use(auth);
 
-router.get('/self', auth, validate_body, sync, async(req, res) => {
+router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');
     try {
         const user = await User.findOne({

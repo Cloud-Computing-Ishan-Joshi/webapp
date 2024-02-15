@@ -3,7 +3,7 @@ const User = require('../model/user');
 async function syncUserMiddleware(req, res, next) {
 
     try {
-        await User.sync({ alter: true }).then(() => {
+        await User.authenticate().then(() => {
             if (process.env.NODE_ENV !== 'test') {
                 console.log('User model synchronized successfully for Auth middleware');
             }

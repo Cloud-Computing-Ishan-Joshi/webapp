@@ -1,9 +1,21 @@
 const request = require('supertest');
 const app = require('../../app');
 const faker = require('faker');
+const User = require('../model/user');
+const db = require('../../database/db');
 
 beforeEach(async() => {
     jest.resetModules();
+    await db.authenticate().then(() => {
+        console.log('Connection has been established successfully for User test.');
+    }).catch(err => {
+        console.error('Unable to connect to the database:');
+    });
+    await User.sync().then(() => {
+        console.log('User model synchronized successfully for User test.');
+    }).catch(err => {
+        console.error('Error synchronizing user model for User test.');
+    });
 });
 
 const first_name = String(faker.name.firstName());

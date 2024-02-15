@@ -47,6 +47,12 @@ jobs:
           sudo systemctl start postgresql
           sudo systemctl enable postgresql
           sudo systemctl status postgresql
+          sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
+          sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
+          # replace ident to scram-sha-256
+          sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
+          sudo systemctl restart postgresql
+          sudo systemctl status postgresql
           # psql -U $DB_USER_ORIG -c "\l"
           # psql -U $DB_USER_ORIG -c "CREATE DATABASE $DB_NAME;"
           # psql -U $DB_USER_ORIG -c "CREATE USER $DB_USER WITH PASSWORD $DB_PASSWORD;"

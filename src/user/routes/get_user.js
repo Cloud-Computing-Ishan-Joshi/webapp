@@ -23,12 +23,12 @@ router.get('/self', auth, validate_body, async(req, res) => {
             }
         });
         if (user) {
-            return res.status(200).send(user);
+            return res.status(200).end(user);
         } else {
-            return res.status(403).send();
+            return res.status(403).end();
         }
     } catch (err) {
-        return res.status(500).send();
+        return res.status(500).end();
     }
 });
 

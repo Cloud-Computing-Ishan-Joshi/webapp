@@ -34,17 +34,20 @@ router.post('/', validate_body, validate, async(req, res) => {
         return res.status(400).end();
     }
     try {
+        console.log('****************** Creating user ************************');
         // check if the user already exists
-        await User.findOne({
+        const user_check = await User.findOne({
             where: {
                 username: req.body.username
             }
-        }).then((user) => {
-            if (user) {
-                console.log('****************User already exists*****************');
-                return res.status(400).end();
-            }
         });
+        console.log('****************** User check ************************');
+        console.log(user_check);
+        console.log('****************** User check ************************');
+        if (user_check) {
+            return res.status(400).end();
+        }
+        console.log('****************User does not exist*****************');
         // if (userExists) {
         //     log('****************User already exists*****************');
         //     return res.status(400).end();

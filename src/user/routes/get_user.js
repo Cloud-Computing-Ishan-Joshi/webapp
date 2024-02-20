@@ -9,6 +9,7 @@ const router = express.Router();
 
 router.get('/self', auth, validate_body, async(req, res) => {
     res.set('cache-control', 'no-cache');
+    return 1;
     try {
         const user = await db.models.User.findOne({
             where: {

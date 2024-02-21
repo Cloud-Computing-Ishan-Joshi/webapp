@@ -42,8 +42,7 @@ variable "image_storage_locations" {
 source "googlecompute" "centos" {
   project_id   = var.project_id
   zone         = var.zone
-  image_family = var.image_family
-  source_image = "projects/centos-cloud/global/images/family/${var.image_family}"
+  source_image_family = var.image_family
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name

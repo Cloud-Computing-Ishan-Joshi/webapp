@@ -8,11 +8,13 @@ packer {
 }
 
 variable "project_id" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "zone" {
-  type = string
+  type      = string
+  sensitive = true
 }
 
 variable "image_family" {
@@ -21,7 +23,8 @@ variable "image_family" {
 }
 
 variable "image_name" {
-  type = string
+  type    = string
+  default = "centos-stream-8"
 }
 
 variable "ssh_username" {

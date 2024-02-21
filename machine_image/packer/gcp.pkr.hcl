@@ -22,6 +22,7 @@ variable "image_family" {
   default = "centos-stream-8"
 }
 
+
 variable "image_name" {
   type    = string
   default = "centos-stream-8"
@@ -42,6 +43,7 @@ source "googlecompute" "centos" {
   project_id   = var.project_id
   zone         = var.zone
   image_family = var.image_family
+  source_image = "projects/centos-cloud/global/images/family/${var.image_family}"
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name

@@ -38,6 +38,10 @@ variable "image_storage_locations" {
   default = ["us-east1"]
 }
 
+variable "network" {
+  type    = string
+  default = "default"
+}
 
 source "googlecompute" "centos" {
   project_id   = var.project_id
@@ -46,6 +50,7 @@ source "googlecompute" "centos" {
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name
+  network                = var.network
   image_storage_locations = var.image_storage_locations
 }
 

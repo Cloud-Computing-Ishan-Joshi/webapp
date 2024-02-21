@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: packer-check
+    name: check-packer
     runs-on: ubuntu-latest
 
     steps:
@@ -33,9 +33,8 @@ jobs:
       
       - name: Packer Check Format
         run: |
-        packer fmt machine_image/packer/gcp.pkr.hcl
-        packer fmt -check machine_image/packer/gcp.pkr.hcl
+          packer fmt machine_image/packer/gcp.pkr.hcl
+          packer fmt -check machine_image/packer/gcp.pkr.hcl
 
       - name: Run Packer validate
         run: packer validate machine_image/packer/gcp.pkr.hcl
-```

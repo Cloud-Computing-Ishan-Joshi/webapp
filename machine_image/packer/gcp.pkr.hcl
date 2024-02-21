@@ -43,16 +43,16 @@ variable "network" {
   default = "default"
 }
 
-variable "account_file" {
-  type      = string
-  default   = "/home/ishanjoshi7i/Downloads/dev-1-415017-ab007b3e3a97.json"
-}
+# variable "account_file" {
+#   type      = string
+#   default   = "/home/ishanjoshi7i/Downloads/dev-1-415017-ab007b3e3a97.json"
+# }
 
 source "googlecompute" "centos" {
   project_id   = var.project_id
   zone         = var.zone
 #   source_image_family = var.image_family
-  account_file = var.account_file
+  # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name
   network                = "default"

@@ -39,11 +39,11 @@ sudo chown -R csye6225:csye6225 /var/webapp
 # sudo chown csye6225:csye6225 /var/webapp/webapp/.env
 
 # Install the dependencies for the webapp npm
-sudo npm install --prefix /var/webapp/webapp
+sudo npm install --prefix /var/webapp/
 
 
 # Use a systemd service file present in /var/webapp/machine_image/service/webapp.service to start the webapp service
-sudo cp /var/webapp/webapp/machine_image/service/webapp.service /etc/systemd/system/webapp.service
+sudo cp /var/webapp/machine_image/service/webapp.service /etc/systemd/system/webapp.service
 sudo systemctl daemon-reload
 sudo systemctl start webapp
 sudo systemctl enable webapp

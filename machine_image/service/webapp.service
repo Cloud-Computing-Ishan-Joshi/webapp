@@ -18,7 +18,7 @@ Environment=PORT=5432
 # Working directory of the application
 WorkingDirectory=/var/webapp/webapp/
 # Command to start the application
-ExecStart=/usr/bin/node /var/webapp/webapp/src/index.js
+ExecStart=/usr/bin/node /var/webapp/src/index.js
 Restart=on-failure
 RestartSec=3
 

@@ -29,6 +29,13 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
 
+      - name: Zip the files
+        run: |
+          zip -r webapp.zip .
+          echo $(pwd)
+          echo $(ls -l)
+
+      
       - name: Install Packer
         run: |
           wget https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip

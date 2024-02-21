@@ -1,0 +1,38 @@
+name: check-packer
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Packer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install Packer
+        run: |
+          wget https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip
+          unzip packer_1.7.4_linux_amd64.zip
+          sudo mv packer /usr/local/bin
+          packer --version
+      
+      - name: Set up GCP credentials
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
+          export_default_credentials: true 
+      
+      - name: Packer Check Format
+        run: |
+        packer fmt machine_image/packer/gcp.pkr.hcl
+        packer fmt -check machine_image/packer/gcp.pkr.hcl
+
+      - name: Run Packer validate
+        run: packer validate machine_image/packer/gcp.pkr.hcl
+```

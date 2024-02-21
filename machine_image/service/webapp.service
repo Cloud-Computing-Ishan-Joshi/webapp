@@ -1,0 +1,23 @@
+[Unit]
+Description=Starts the NodeJS application
+After=network.target
+
+[Service]
+# get the environment variables from the .env file
+EnvironmentFile=/var/webapp/.env
+# Environment=DB_NAME=
+# Environment=DB_USER=postgres
+# Environment=DB_PASSWORD=postgres
+# Environment=NODE_ENV=production
+# Environment=PORT=5432
+# Means that the service is a single process
+Type=simple 
+# Group and User that the service will run as
+Group=csye6225
+User=csye6225
+ExecStart=/usr/bin/node /var/webapp/src/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+

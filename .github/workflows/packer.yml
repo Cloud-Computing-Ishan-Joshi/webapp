@@ -21,7 +21,7 @@ jobs:
           sudo mv packer /usr/local/bin
           packer --version
       
-      -name: Zip the files
+      - name: Zip the files
         run: zip -r webapp.zip .
 
       # - name: Upload the zip file

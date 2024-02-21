@@ -7,11 +7,11 @@ on:
 
 jobs:
 
-  job_id:
-    # Add "id-token" with the intended permissions.
-    permissions:
-      contents: 'read'
-      id-token: 'write'
+  # job_id:
+  #   # Add "id-token" with the intended permissions.
+  #   permissions:
+  #     contents: 'read'
+  #     id-token: 'write'
 
   build:
     name: check-packer
@@ -21,7 +21,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - id: 'auth'
+      - name: 'Authenticate with Google Cloud'
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'

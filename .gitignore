@@ -128,3 +128,12 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore packer
+packer_cache
+*.pkrvars.hcl
+*.tfvars
+*.tfstate
+*.tfstate.backup
+*.tfstate.backup.*
+*.pkrvars.json

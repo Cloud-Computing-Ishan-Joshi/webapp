@@ -21,6 +21,9 @@ jobs:
           sudo mv packer /usr/local/bin
           packer --version
       
+      - name: Pack the files
+        run: packer init machine_image/packer/gcp.pkr.hcl
+
       - name: Set up GCP credentials
         uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
         with:

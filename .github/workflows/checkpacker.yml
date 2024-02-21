@@ -31,8 +31,7 @@ jobs:
 
       - name: Zip the files
         run: |
-          zip -r webapp.zip .
-          echo $(pwd)
+          zip -r webapp.zip . -x \\node_modules\\ \\.git\\ \\.env\\
 
       
       - name: Install Packer

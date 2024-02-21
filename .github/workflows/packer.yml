@@ -36,7 +36,7 @@ jobs:
           packer --version
       
       - name: Zip the files
-        run: zip -r webapp.zip .
+        run: zip -r webapp.zip . -x \\node_modules\\ \\.git\\ \\.env\\
 
       # - name: Upload the zip file
       #   uses: actions/upload-artifact@v2

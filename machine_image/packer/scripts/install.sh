@@ -13,6 +13,7 @@ sudo apt-get install -y nodejs
 # Setup Postgres
 sudo systemctl start postgresql
 sudo systemctl enable postgresql
+sudo systemctl status postgresql
 sudo -u postgres psql -c "CREATE USER centos_user WITH PASSWORD 'centos_password';"
 sudo -u postgres psql -c "CREATE DATABASE centos_db WITH OWNER centos_user;"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE centos_db TO centos_user;"

@@ -53,16 +53,16 @@ source "googlecompute" "centos" {
 build {
   sources = ["source.googlecompute.centos"]
   provisioner "shell" {
-    script = "./scripts/install.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/install.sh"
   }
   # copy the file to the instance before running the script through github actions
   provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp.zip"
+    source      = "/home/runner/work/webapp/webapp/webapp.zip"
     destination = "/tmp/packer/webapp.zip"
   }
 
   # After copy the file, run the script
   provisioner "shell" {
-    script = "./scripts/postprocess.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/postprocess.sh"
   }
 }

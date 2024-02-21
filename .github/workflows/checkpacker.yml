@@ -33,7 +33,6 @@ jobs:
         run: |
           zip -r webapp.zip .
           echo $(pwd)
-          echo $(ls -l)
 
       
       - name: Install Packer

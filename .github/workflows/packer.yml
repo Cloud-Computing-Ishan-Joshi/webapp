@@ -1,0 +1,47 @@
+name: packer-runner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Packer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install Packer
+        run: |
+          wget https://releases.hashicorp.com/packer/1.7.4/packer_1.7.4_linux_amd64.zip
+          unzip packer_1.7.4_linux_amd64.zip
+          sudo mv packer /usr/local/bin
+          packer --version
+      
+      -name: Zip the files
+        run: zip -r webapp.zip .
+
+      # - name: Upload the zip file
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: webapp
+      #     path: webapp.zip
+
+      - name: Set up GCP credentials
+        uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ secrets.PROJECT_ID }}
+          export_default_credentials: true
+
+      # Use the GCP Credentials to run Packer build
+      - name: Run Packer
+        run: packer build -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'image_name=${{ secrets.IMAGE_NAME }}' -var 'zone=${{ secrets.ZONE }}' -var 'image_storage_locations=${{ secrets.IMAGE_STORAGE_LOCATIONS }}' -var 'source_image=${{ secrets.SOURCE_IMAGE }}' machine_image/packer/gcp.pkr.hcl
+
+
+      # - name: Run Packer
+      #   run: packer build -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'source_image=${{ secrets.SOURCE_IMAGE }}' -var 'zone=${{ secrets.ZONE }}
+

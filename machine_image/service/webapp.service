@@ -16,7 +16,7 @@ Environment=DB_PASSWORD=centos_password
 Environment=NODE_ENV=dev
 Environment=PORT=5432
 # Working directory of the application
-WorkingDirectory=/var/webapp/webapp/
+WorkingDirectory=/var/webapp/
 # Command to start the application
 ExecStart=/usr/bin/node /var/webapp/src/index.js
 Restart=on-failure

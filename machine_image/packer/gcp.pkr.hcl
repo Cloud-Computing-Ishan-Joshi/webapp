@@ -55,7 +55,7 @@ source "googlecompute" "centos" {
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name
-  network                = "default"
+  network                = var.network
   image_storage_locations = var.image_storage_locations
   source_image = "centos-stream-8-v20240110"
   disk_size = 20

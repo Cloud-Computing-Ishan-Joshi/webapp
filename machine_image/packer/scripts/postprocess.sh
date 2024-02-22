@@ -15,20 +15,8 @@ sudo chmod 755 /var/webapp
 # Change the ownership of /var/webapp to csye6225:csye6225
 sudo chown -R csye6225:csye6225 /var/webapp
 
-# Create env file to /var/webapp/.env
-# sudo touch /var/webapp/webapp/.env
-# sudo chmod 755 /var/webapp/webapp/.env
-# sudo echo "PORT=5432" > /var/webapp/webapp/.env
-# sudo echo "DB_USERNAME=centos_user" >> /var/webapp/webapp/.env
-# sudo echo "DB_PASSWORD=centos_password" >> /var/webapp/webapp/.env
-# sudo echo "DB_NAME=centos_db" >> /var/webapp/webapp/.env
-# sudo echo "DB_HOST=localhost" >> /var/webapp/webapp/.env
-# sudo echo "DB_PORT=5432" >> /var/webapp/webapp/.env
 
 # Export environment variables
-
-
-
 # sudo echo "PORT=5432" | sudo tee -a /var/webapp/webapp/.env
 # sudo echo "DB_USER=centos_user" | sudo tee -a /var/webapp/webapp/.env
 # sudo echo "DB_PASSWORD=centos_password" | sudo tee -a /var/webapp/webapp/.env

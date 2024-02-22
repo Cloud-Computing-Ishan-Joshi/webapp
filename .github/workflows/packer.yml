@@ -1,10 +1,11 @@
 name: packer-runner
 
 on:
-  push:
-    branches: [main, HW4]
-  workflow_dispatch:
-
+  # Trigger the workflow on puill request and is merge
+  pull_request:
+    types: [closed]
+    branches: [ main ]
+  
 jobs:
   # job_id:
   #   # Add "id-token" with the intended permissions.
@@ -15,6 +16,7 @@ jobs:
   build:
     name: packer-runner
     runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
 
     steps:
       - name: Check out code

@@ -1,8 +1,8 @@
 name: check-packer
 
 on:
-  push:
-    branches: [main, HW4]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 jobs:

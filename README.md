@@ -2,7 +2,7 @@
 
 Cloud Computing Assignments
 
-# Assignment #03
+# Assignment #04 (Demo)
 
 Name: Ishan Subodh Joshi
 
@@ -38,7 +38,6 @@ NUID: 002836254
    4. A user can only update their own account information.
 5. Get user information
    1. As a user, I want to get my account information. Response payload should return all fields for the user except for password.
-
 
 ## Web Application - Integration Tests[¶](https://spring2024.csye6225.cloud/assignments/03/#web-application-integration-tests "Permanent link")
 

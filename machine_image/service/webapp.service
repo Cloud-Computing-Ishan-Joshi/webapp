@@ -9,6 +9,7 @@ Type=simple
 Group=csye6225
 User=csye6225
 # get the environment variables from the .env file
+EnvironmentFile=/var/webapp/.env
 Environment=DB_NAME=${DB_NAME}
 Environment=DB_USER=${DB_USER}
 Environment=DB_HOST=${DB_HOST}

@@ -7,7 +7,7 @@ packer {
   }
 }
 
-variable "project_id"   {
+variable "project_id" {
   type      = string
   sensitive = true
 }
@@ -51,7 +51,7 @@ variable "network" {
 source "googlecompute" "centos" {
   project_id   = var.project_id
   zone         = var.zone
-#   source_image_family = var.image_family
+#   source_image_family = var.image_famil
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name

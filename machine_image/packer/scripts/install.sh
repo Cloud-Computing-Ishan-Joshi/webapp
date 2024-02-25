@@ -21,10 +21,10 @@ sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
 sudo systemctl restart postgresql
 
 # Create a new user and database
-sudo su - postgres -c "psql -c \"CREATE DATABASE centos_db;\""
-sudo su - postgres -c "psql -c \"CREATE USER centos_user WITH PASSWORD 'centos_password';\""
-sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE centos_db TO centos_user;\""
-sudo su - postgres -c "psql -c \"ALTER USER centos_user WITH SUPERUSER;\""
+sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""
+sudo su - postgres -c "psql -c \"CREATE USER ${DB_USER} WITH PASSWORD ${DB_PASSWORD};\""
+sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE centos_db TO ${DB_USER};\""
+sudo su - postgres -c "psql -c \"ALTER USER ${DB_USER} WITH SUPERUSER;\""
 
 sudo systemctl status postgresql 
 

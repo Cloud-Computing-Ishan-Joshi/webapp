@@ -9,12 +9,12 @@ Type=simple
 Group=csye6225
 User=csye6225
 # get the environment variables from the .env file
-Environment=DB_NAME=centos_db
-Environment=DB_USER=centos_user
-Environment=DB_HOST=localhost
-Environment=DB_PASSWORD=centos_password
-Environment=NODE_ENV=dev
-Environment=PORT=5432
+Environment=DB_NAME=${DB_NAME}
+Environment=DB_USER=${DB_USER}
+Environment=DB_HOST=${DB_HOST}
+Environment=DB_PASSWORD=${DB_PASSWORD}
+Environment=NODE_ENV=${NODE_ENV}
+Environment=PORT=${PORT}
 # Working directory of the application
 WorkingDirectory=/var/webapp/
 # Command to start the application

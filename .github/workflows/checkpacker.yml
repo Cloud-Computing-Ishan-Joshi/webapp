@@ -30,7 +30,6 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v2'
 
       - name: Zip the files
-        if: !exists('webapp.zip')
         run: |
           zip -r webapp.zip . -x \\node_modules\\ \\.git\\
         

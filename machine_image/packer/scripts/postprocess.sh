@@ -10,11 +10,13 @@ sudo mkdir -p /var/webapp
 # echo $(ls -la /tmp/)
 sudo unzip /tmp/webapp.zip -d /var/webapp
 sudo chmod 755 /var/webapp
+sudo chmod 755 /var/webapp/.env
 # echo $(ls -la /var/webapp/webapp)
 
 # Change the ownership of /var/webapp to csye6225:csye6225
 sudo chown -R csye6225:csye6225 /var/webapp
 
+# Source the environment variables from /var/webapp/.env
 source /var/webapp/.env
 
 # Create a new user and database

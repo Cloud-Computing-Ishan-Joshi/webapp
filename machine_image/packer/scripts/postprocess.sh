@@ -15,6 +15,8 @@ sudo chmod 755 /var/webapp
 # Change the ownership of /var/webapp to csye6225:csye6225
 sudo chown -R csye6225:csye6225 /var/webapp
 
+source /var/webapp/.env
+
 
 # Export environment variables
 # sudo echo "PORT=5432" | sudo tee -a /var/webapp/webapp/.env

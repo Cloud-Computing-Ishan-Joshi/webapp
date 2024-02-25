@@ -65,10 +65,10 @@ source "googlecompute" "centos" {
 
 build {
   sources = ["source.googlecompute.centos"]
-  provisioner "shell" {
-    # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/envscript.sh"
-    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/envscript.sh"
-  }
+  # provisioner "shell" {
+  #   # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/envscript.sh"
+  #   script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/envscript.sh"
+  # }
   provisioner "shell" {
     # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/install.sh"
     script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/install.sh"

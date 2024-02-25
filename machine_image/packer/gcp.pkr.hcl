@@ -49,17 +49,17 @@ variable "network" {
 # }
 
 source "googlecompute" "centos" {
-  project_id   = var.project_id
-  zone         = var.zone
-#   source_image_family = var.image_family
+  project_id = var.project_id
+  zone       = var.zone
+  #   source_image_family = var.image_family
   # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name
-  network                = var.network
+  network                 = var.network
   image_storage_locations = var.image_storage_locations
-  source_image = "centos-stream-8-v20240110"
-  disk_size = 20
-  machine_type = "n1-standard-1"
+  source_image            = "centos-stream-8-v20240110"
+  disk_size               = 20
+  machine_type            = "n1-standard-1"
 
 }
 
@@ -71,7 +71,7 @@ build {
 
   # copy the file to the instance before running the script through github actions
   provisioner "file" {
-    source      = "/home/runner/work/webapp/webapp/webapp.zip"
+    source = "/home/runner/work/webapp/webapp/webapp.zip"
     # source      = "/home/ishanjoshi7i/cloud/webapp.zip"
     # destination = "/tmp/packer/webapp.zip"
     destination = "/tmp/webapp.zip"

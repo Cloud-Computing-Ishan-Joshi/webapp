@@ -63,6 +63,6 @@ jobs:
           NODE_ENV: test
 
         
-      - name: Execute 1 for failure
-        if: failure()
-        run: exit 1
+      # - name: Execute 1 for failure
+      #   if: failure()
+      #   run: exit 1

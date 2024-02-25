@@ -84,7 +84,7 @@ build {
 
   # After copy the file, run the script
   provisioner "shell" {
-    # script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/postprocess.sh"
-    script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/postprocess.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/postprocess.sh"
+    # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/postprocess.sh"
   }
 }

@@ -43,16 +43,16 @@ variable "network" {
   default = "default"
 }
 
-variable "account_file" {
-  type      = string
-  default   = "/home/ishanjoshi7i/Downloads/dev-1-415017-ab007b3e3a97.json"
-}
+# variable "account_file" {
+#   type      = string
+#   default   = "/home/ishanjoshi7i/Downloads/dev-1-415017-ab007b3e3a97.json"
+# }
 
 source "googlecompute" "centos" {
   project_id   = var.project_id
   zone         = var.zone
 #   source_image_family = var.image_family
-  account_file = var.account_file
+  # account_file = var.account_file
   ssh_username            = var.ssh_username
   image_name              = var.image_name
   network                = var.network
@@ -66,18 +66,18 @@ source "googlecompute" "centos" {
 build {
   sources = ["source.googlecompute.centos"]
   provisioner "shell" {
-    script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/envscript.sh"
-    # script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/envscript.sh"
+    # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/envscript.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/envscript.sh"
   }
   provisioner "shell" {
-    script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/install.sh"
-    # script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/install.sh"
+    # script = "/home/ishanjoshi7i/cloud-computing/hw5/webapp/machine_image/packer/scripts/install.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/install.sh"
   }
 
   # copy the file to the instance before running the script through github actions
   provisioner "file" {
-    # source      = "/home/runner/work/webapp/webapp/webapp.zip"
-    source      = "/home/ishanjoshi7i/cloud/webapp.zip"
+    source      = "/home/runner/work/webapp/webapp/webapp.zip"
+    # source      = "/home/ishanjoshi7i/cloud/webapp.zip"
     # destination = "/tmp/packer/webapp.zip"
     destination = "/tmp/webapp.zip"
   }

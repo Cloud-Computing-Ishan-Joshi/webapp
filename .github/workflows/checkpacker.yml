@@ -28,11 +28,6 @@ jobs:
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
-
-      - name: Zip the files
-        run: |
-          zip -r webapp.zip . -x \\node_modules\\ \\.git\\ \\.env\\
-
       
       - name: Install Packer
         run: |
@@ -46,8 +41,12 @@ jobs:
       
       - name: Packer Check Format
         run: |
-          packer fmt machine_image/packer/gcp.pkr.hcl
+          # packer fmt machine_image/packer/gcp.pkr.hcl
           packer fmt -check machine_image/packer/gcp.pkr.hcl
 
       - name: Run Packer validate
         run: packer validate -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'image_name=${{ secrets.IMAGE_NAME }}' -var 'zone=${{ secrets.ZONE }}' -var 'image_storage_locations=${{ secrets.IMAGE_STORAGE_LOCATIONS }}' machine_image/packer/gcp.pkr.hcl
+
+      - name: Zip the files
+        run: |
+          zip -r webapp.zip . -x \\node_modules\\ \\.git\\ \\.env\\

@@ -38,8 +38,19 @@ jobs:
           sudo mv packer /usr/local/bin
           packer --version
       
+      - name: Create .env
+        run: |
+          touch .env
+          sudo echo "PORT=${{ secrets.PORT }}" | sudo tee -a .env
+          sudo echo "DB_HOST=${{ secrets.DB_HOST }}" | sudo tee -a .env
+          sudo echo "DB_USER=${{ secrets.DB_USER }}" | sudo tee -a .env
+          sudo echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sudo tee -a .env
+          sudo echo "DB_NAME=${{ secrets.DB_NAME }}" | sudo tee -a .env
+          sudo echo "DB_PORT=${{ secrets.DB_PORT }}" | sudo tee -a .env
+          sudo echo "NODE_ENV=${{ secrets.NODE_ENV }}" | sudo tee -a .env
+      
       - name: Zip the files
-        run: zip -r webapp.zip . -x \\node_modules\\ \\.git\\ \\.env\\
+        run: zip -r webapp.zip . -x \\node_modules\\ \\.git\\ 
 
       # - name: Upload the zip file
       #   uses: actions/upload-artifact@v2

@@ -24,10 +24,6 @@ const start = async() => {
         console.log('DB_HOST not found');
         process.exit(1);
     }
-    if (!process.env.PORT) {
-        console.log('PORT not found');
-        process.exit(1);
-    }
     if (!process.env.NODE_ENV) {
         console.log('NODE_ENV not found');
         process.exit(1);

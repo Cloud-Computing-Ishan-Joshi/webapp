@@ -3,9 +3,9 @@ name: packer-runner
 on:
   # Trigger the workflow on puill request and is merge
   push:
+    branches: [main, hw5]
   # pull_request:
     # types: [closed]
-    branches: [main, hw5]
   
 jobs:
   # job_id:

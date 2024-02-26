@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+
+
 # Create a local new user and group named csye6225 with nologin shell /usr/sbin/nologin
 sudo groupadd -r csye6225
 sudo useradd -r -g csye6225 -s /usr/sbin/nologin csye6225
@@ -18,6 +21,15 @@ sudo chown -R csye6225:csye6225 /var/webapp
 
 # Source the environment variables from /var/webapp/.env
 source /var/webapp/.env
+
+# Export environment variables
+export DB_HOST=$DB_HOST
+export DB_USER=$DB_USER
+export DB_PASSWORD=$DB_PASSWORD
+export DB_NAME=$DB_NAME
+export DB_PORT=$DB_PORT
+export PORT=$PORT
+export NODE_ENV=$NODE_ENV
 
 # Create a new user and database
 sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""

@@ -32,10 +32,10 @@ sudo chown -R csye6225:csye6225 /var/webapp
 # export NODE_ENV=$NODE_ENV
 
 # Create a new user and database
-sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""
-sudo su - postgres -c "psql -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';\""
-sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE centos_db TO ${DB_USER};\""
-sudo su - postgres -c "psql -c \"ALTER USER ${DB_USER} WITH SUPERUSER;\""
+# sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""
+# sudo su - postgres -c "psql -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';\""
+# sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE centos_db TO ${DB_USER};\""
+# sudo su - postgres -c "psql -c \"ALTER USER ${DB_USER} WITH SUPERUSER;\""
 
 
 # Export environment variables

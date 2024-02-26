@@ -5,7 +5,7 @@ on:
   push:
   # pull_request:
     # types: [closed]
-    branches: [main, hw5]
+    branches: [main, init]
   
 jobs:
   # job_id:

@@ -5,22 +5,22 @@
 # Install Postgres
 sudo dnf install unzip -y
 
-sudo dnf module enable postgresql:15 -y
-sudo dnf install postgresql-server -y
-sudo /usr/bin/postgresql-setup --initdb
-sudo systemctl start postgresql
-sudo systemctl enable postgresql
-sudo systemctl status postgresql
+# sudo dnf module enable postgresql:15 -y
+# sudo dnf install postgresql-server -y
+# sudo /usr/bin/postgresql-setup --initdb
+# sudo systemctl start postgresql
+# sudo systemctl enable postgresql
+# sudo systemctl status postgresql
 
-# Setup Postgres
-sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
-# uncomment listen_addresses
-sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
-# uncomment port
-sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
-sudo systemctl restart postgresql
+# # Setup Postgres
+# sudo sed -i "s/ident/scram-sha-256/g" /var/lib/pgsql/data/pg_hba.conf
+# # uncomment listen_addresses
+# sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /var/lib/pgsql/data/postgresql.conf
+# # uncomment port
+# sudo sed -i "s/#port = 5432/port = 5432/g" /var/lib/pgsql/data/postgresql.conf
+# sudo systemctl restart postgresql
 
-sudo systemctl status postgresql 
+# sudo systemctl status postgresql 
 
 
 # Install Node.js 18.x

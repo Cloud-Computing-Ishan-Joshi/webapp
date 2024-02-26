@@ -9,15 +9,16 @@ Type=simple
 Group=csye6225
 User=csye6225
 # get the environment variables from the .env file
-EnvironmentFile=/var/webapp/.env
-Environment=DB_NAME=${DB_NAME}
-Environment=DB_USER=${DB_USER}
-Environment=DB_HOST=${DB_HOST}
-Environment=DB_PASSWORD=${DB_PASSWORD}
-Environment=NODE_ENV=${NODE_ENV}
-Environment=PORT=${PORT}
-# Working directory of the application
 WorkingDirectory=/var/webapp/
+EnvironmentFile=.env
+# ExecStartPre=/var/webapp/machine_image/packer/scripts/envscript.sh
+#Environment=DB_NAME=${DB_NAME}
+#Environment=DB_USER=${DB_USER}
+#Environment=DB_HOST=${DB_HOST}
+#Environment=DB_PASSWORD=${DB_PASSWORD}
+#Environment=NODE_ENV=${NODE_ENV}
+#Environment=PORT=${PORT}
+# Working directory of the application
 # Command to start the application
 ExecStart=/usr/bin/node /var/webapp/src/index.js
 Restart=on-failure

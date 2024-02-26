@@ -13,23 +13,23 @@ sudo mkdir -p /var/webapp
 # echo $(ls -la /tmp/)
 sudo unzip /tmp/webapp.zip -d /var/webapp
 sudo chmod 755 /var/webapp
-sudo chmod 755 /var/webapp/.env
+# sudo chmod 755 /var/webapp/.env
 # echo $(ls -la /var/webapp/webapp)
 
 # Change the ownership of /var/webapp to csye6225:csye6225
 sudo chown -R csye6225:csye6225 /var/webapp
 
 # Source the environment variables from /var/webapp/.env
-source /var/webapp/.env
+# source /var/webapp/.env
 
-# Export environment variables
-export DB_HOST=$DB_HOST
-export DB_USER=$DB_USER
-export DB_PASSWORD=$DB_PASSWORD
-export DB_NAME=$DB_NAME
-export DB_PORT=$DB_PORT
-export PORT=$PORT
-export NODE_ENV=$NODE_ENV
+# # Export environment variables
+# export DB_HOST=$DB_HOST
+# export DB_USER=$DB_USER
+# export DB_PASSWORD=$DB_PASSWORD
+# export DB_NAME=$DB_NAME
+# export DB_PORT=$DB_PORT
+# export PORT=$PORT
+# export NODE_ENV=$NODE_ENV
 
 # Create a new user and database
 sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""

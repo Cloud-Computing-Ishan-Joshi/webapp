@@ -2,10 +2,10 @@ name: packer-runner
 
 on:
   # Trigger the workflow on puill request and is merge
-  # push:
-  pull_request:
-    types: [closed]
-    branches: [ main]
+  push:
+  # pull_request:
+    # types: [closed]
+    branches: [main, hw5]
   
 jobs:
   # job_id:
@@ -17,7 +17,7 @@ jobs:
   build:
     name: packer-runner
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
 
     steps:
       - name: Check out code

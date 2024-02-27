@@ -49,10 +49,9 @@ variable "network" {
 # }
 
 source "googlecompute" "centos" {
-  project_id = var.project_id
-  zone       = var.zone
-  #   source_image_family = var.image_family
   # account_file = var.account_file
+  project_id              = var.project_id
+  zone                    = var.zone
   ssh_username            = var.ssh_username
   image_name              = var.image_name
   network                 = var.network

@@ -20,7 +20,7 @@ EnvironmentFile=.env
 #Environment=PORT=${PORT}
 # Working directory of the application
 # Command to start the application
-WorkingDirectory=/var/webapp/
+# WorkingDirectory=/var/webapp/
 ExecStart=/usr/bin/node /var/webapp/src/index.js
 Restart=on-failure
 RestartSec=3

@@ -9,8 +9,8 @@ Type=simple
 Group=csye6225
 User=csye6225
 # get the environment variables from the .env file
-WorkingDirectory=/var/env_webapp/
-EnvironmentFile=.env
+WorkingDirectory=-/var/env_webapp/
+EnvironmentFile=-.env
 # ExecStartPre=/var/webapp/machine_image/packer/scripts/envscript.sh
 #Environment=DB_NAME=${DB_NAME}
 #Environment=DB_USER=${DB_USER}

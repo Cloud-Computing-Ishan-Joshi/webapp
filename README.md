@@ -2,7 +2,7 @@
 
 Cloud Computing Assignments
 
-# Assignment #04 (Demo)
+# Assignment #05
 
 Name: Ishan Subodh Joshi
 
@@ -62,11 +62,11 @@ npm i
 ### Create .env file in Project folder
 
 ```shell
-DB_NAME=postgres
-DB_USER=postgres
+DB_NAME=webapp
+DB_USER=webapp
 DB_PASSWORD=<password>
 DB_HOST=localhost
-PORT=5000
+PORT=5432
 NODE_ENV=dev
 ```
 

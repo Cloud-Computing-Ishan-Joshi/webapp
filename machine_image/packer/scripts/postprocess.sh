@@ -9,7 +9,7 @@ sudo useradd -r -g csye6225 -s /usr/sbin/nologin csye6225
 
 # Unzip the file /tmp/packer/webapp.zip to /var/webapp
 # See the webapp.zip folder in /tmp/packer/webapp.zip using echo
-sudo mkdir -p /var/webapp
+sudo mkdir -p /usr/webapp
 # echo $(ls -la /tmp/)
 sudo unzip /tmp/webapp.zip -d /usr/webapp
 sudo chmod 755 /usr/webapp

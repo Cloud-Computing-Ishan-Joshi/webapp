@@ -5,7 +5,7 @@ const request_body = async(req, res, next) => {
         res.set('Cache-Control', 'no-cache');
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: 'POST /healthz API path',
             meta: `Invalid request body 400`
         });

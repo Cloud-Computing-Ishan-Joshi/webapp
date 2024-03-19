@@ -7,7 +7,7 @@ const request_body = async(req, res, next) => {
     if ((!Object.keys(req.body).length || Object.keys(req.query).length) && allowedMethodsBody.has(req.method)) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid request body 400`
         });
@@ -17,7 +17,7 @@ const request_body = async(req, res, next) => {
     if (Object.keys(req.body).length && !allowedMethodsBody.has(req.method)) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid request body 400`
         });
@@ -30,7 +30,7 @@ const request_body = async(req, res, next) => {
     if (extraParams.length > 0 && allowedMethodsBody.has(req.method)) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid request body 400`
         });

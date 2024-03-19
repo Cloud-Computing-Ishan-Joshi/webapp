@@ -29,7 +29,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
     if (!errors.isEmpty() || req.body.username) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: 'PUT /v1/user/self API path',
             meta: `Invalid request 400, ${errors.array()} `
         });
@@ -43,7 +43,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         if (!user) {
             logger.log({
                 level: 'warn',
-                severity: 'warning',
+                severity: 'WARNING',
                 message: 'PUT /v1/user/self API path',
                 meta: `User not found 403`
             });
@@ -55,7 +55,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
             const elapsed = end - req.start;
             logger.log({
                 level: 'info',
-                severity: 'info',
+                severity: 'INFO',
                 message: 'PUT /v1/user/self API path',
                 meta: `Success 204, Response time: ${elapsed}ms`
             });
@@ -63,7 +63,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         }).catch((err) => {
             logger.log({
                 level: 'error',
-                severity: 'error',
+                severity: 'ERROR',
                 message: 'PUT /v1/user/self API path',
                 meta: err
             });
@@ -73,7 +73,7 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
     }).catch((err) => {
         logger.log({
             level: 'error',
-            severity: 'error',
+            severity: 'ERROR',
             message: 'PUT /v1/user/self API path',
             meta: err
         });

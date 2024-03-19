@@ -5,7 +5,7 @@ const invalid_method = async(req, res, next) => {
         res.set('Cache-Control', 'no-cache');
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: 'GET /healthz API path',
             meta: `Invalid request method: ${req.method} Status: 405`
         });

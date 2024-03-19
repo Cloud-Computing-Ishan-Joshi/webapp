@@ -20,7 +20,7 @@ router.all('/healthz', validate_method, validate_body, async(req, res) => {
         const elapsed = end - req.start;
         logger.log({
             level: 'info',
-            severity: 'info',
+            severity: 'INFO',
             message: 'GET /healthz API path',
             meta: `Success 200, Response time: ${elapsed}ms`
         });
@@ -31,7 +31,7 @@ router.all('/healthz', validate_method, validate_body, async(req, res) => {
         }
         logger.log({
             level: 'error',
-            severity: 'error',
+            severity: 'ERROR',
             message: 'GET /healthz API path',
             meta: err
         });

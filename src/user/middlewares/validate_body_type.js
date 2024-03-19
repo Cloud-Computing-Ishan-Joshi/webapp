@@ -5,7 +5,7 @@ const onlyJsonBody = (req, res, next) => {
     if (req.headers['content-type'] !== 'application/json') {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid content-type ${415}`
         });

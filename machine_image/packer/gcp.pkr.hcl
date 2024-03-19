@@ -77,7 +77,7 @@ build {
   }
   
   provisioner "shell" {
-    shell = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/opsagent.sh"
+    script = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/opsagent.sh"
   }
 
   # After copy the file, run the script

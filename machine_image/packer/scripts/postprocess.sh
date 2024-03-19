@@ -11,13 +11,13 @@ sudo useradd -r -g csye6225 -s /usr/sbin/nologin csye6225
 # See the webapp.zip folder in /tmp/packer/webapp.zip using echo
 sudo mkdir -p /var/webapp
 # echo $(ls -la /tmp/)
-sudo unzip /tmp/webapp.zip -d /var/webapp
-sudo chmod 755 /var/webapp
+sudo unzip /tmp/webapp.zip -d /usr/webapp
+sudo chmod 755 /usr/webapp
 # sudo chmod 755 /var/webapp/.env
 # echo $(ls -la /var/webapp/webapp)
 
 # Change the ownership of /var/webapp to csye6225:csye6225
-sudo chown -R csye6225:csye6225 /var/webapp
+sudo chown -R csye6225:csye6225 /usr/webapp
 
 # Source the environment variables from /var/webapp/.env
 # source /var/webapp/.env
@@ -49,11 +49,11 @@ sudo chown -R csye6225:csye6225 /var/webapp
 # sudo chown csye6225:csye6225 /var/webapp/webapp/.env
 
 # Install the dependencies for the webapp npm
-sudo npm install --prefix /var/webapp/
+sudo npm install --prefix /usr/webapp/
 
 
 # Use a systemd service file present in /var/webapp/machine_image/service/webapp.service to start the webapp service
-sudo cp /var/webapp/machine_image/service/webapp.service /etc/systemd/system/webapp.service
+sudo cp /usr/webapp/machine_image/service/webapp.service /etc/systemd/system/webapp.service
 sudo systemctl daemon-reload
 sudo systemctl start webapp
 sudo systemctl enable webapp

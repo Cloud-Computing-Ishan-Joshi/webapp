@@ -2,7 +2,7 @@
 set -e
 
 # Source the .env file
-source /var/webapp/.env
+source /usr/webapp/.env
 
 # Export environment variables
 export DB_HOST=$DB_HOST

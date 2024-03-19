@@ -1,8 +1,11 @@
+const { logger } = require('../../logs/logger');
+
 const request_body = async(req, res, next) => {
     // res.set('cache-control', 'no-cache');
     const allowedMethodsBody = new Set(['POST', 'PUT']);
 
     if ((!Object.keys(req.body).length || Object.keys(req.query).length) && allowedMethodsBody.has(req.method)) {
+
         return res.status(400).end();
     }
 
@@ -16,6 +19,7 @@ const request_body = async(req, res, next) => {
     if (extraParams.length > 0 && allowedMethodsBody.has(req.method)) {
         return res.status(400).end();
     }
+    req.start = Date.now();
     next();
 };
 

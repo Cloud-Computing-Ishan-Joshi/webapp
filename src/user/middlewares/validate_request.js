@@ -1,3 +1,5 @@
+const { logger } = require('../../logs/logger');
+
 const invalid_method = async(req, res, next) => {
     const allowedMethods = new Set(['POST']);
     const allowedMethods_self = new Set(['GET', 'POST', 'PUT']);
@@ -8,6 +10,7 @@ const invalid_method = async(req, res, next) => {
     if (req.path === '/user' && !allowedMethods.has(req.method)) {
         return res.status(405).end();
     } else {
+        req.start = Date.now();
         next();
     }
 }

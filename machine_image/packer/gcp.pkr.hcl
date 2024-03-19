@@ -75,6 +75,10 @@ build {
     # destination = "/tmp/packer/webapp.zip"
     destination = "/tmp/webapp.zip"
   }
+  
+  provisioner "shell" {
+    shell = "/home/runner/work/webapp/webapp/machine_image/packer/scripts/opsagent.sh"
+  }
 
   # After copy the file, run the script
   provisioner "shell" {

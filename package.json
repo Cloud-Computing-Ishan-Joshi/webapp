@@ -17,7 +17,6 @@
         "testIgnorePatterns": [
             "<rootDir>/src/**/user/**/__test__/*.test.js",
             "<rootDir>/src/**/healthz/**/__test__/*.test.js"
-
         ]
     },
     "author": "Ishan Joshi",
@@ -35,6 +34,7 @@
         "pg": "^8.11.3",
         "pg-hstore": "^2.3.4",
         "sequelize": "^6.36.0",
-        "supertest": "^6.3.4"
+        "supertest": "^6.3.4",
+        "winston": "^3.12.0"
     }
 }

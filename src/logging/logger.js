@@ -23,7 +23,7 @@ const logger = winston.createLogger({
     ),
     transports: [
       new winston.transports.Console(),
-      // new winston.transports.File({ filename: '/var/log/webapp/webapp.log' }), // Save log file in /var/ folder
+      new winston.transports.File({ filename: '/var/log/webapp/webapp.log' }), // Save log file in /var/ folder
       // new winston.transports.File({ filename: 'application.log' }), // Save log file in /var/ folder
       // new LoggingWinston({
       //   projectId: 'your-project-id',

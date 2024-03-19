@@ -1,4 +1,4 @@
-const { logger } = require('../../logs/logger');
+const { logger } = require('../../logging/logger');
 
 const request_body = async(req, res, next) => {
     // res.set('cache-control', 'no-cache');

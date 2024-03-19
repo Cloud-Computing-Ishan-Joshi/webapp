@@ -1,6 +1,6 @@
 const basicAuth = require('basic-auth');
 const User = require('../model/user');
-const {logger, setLabel} = require('../../logs/logger');
+const {logger, setLabel} = require('../../logging/logger');
 
 async function verifyAuth(req, res, next) {
     res.set('cache-control', 'no-cache');

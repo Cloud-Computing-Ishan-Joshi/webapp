@@ -4,7 +4,7 @@ const app = require('./app');
 const config = require('./config');
 
 const dotenv = require('dotenv');
-const {logger, setLabel} = require('./logs/logger');
+const {logger, setLabel} = require('./logging/logger');
 dotenv.config();
 
 setLabel('INDEX');

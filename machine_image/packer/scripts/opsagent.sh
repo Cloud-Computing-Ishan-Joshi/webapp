@@ -23,7 +23,7 @@ logging:
       default_pipeline:
         receivers: [my-app-receiver]
         processors: [my-app-processor]
-" | sudo tee -a /etc/google-cloud-ops-agent/config.d/my-app.conf
+" | sudo tee -a /etc/google-cloud-ops-agent/config.yaml
 
 sudo systemctl restart google-cloud-ops-agent
 

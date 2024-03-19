@@ -19,34 +19,9 @@ sudo chmod 755 /usr/webapp
 # Change the ownership of /var/webapp to csye6225:csye6225
 sudo chown -R csye6225:csye6225 /usr/webapp
 
-# Source the environment variables from /var/webapp/.env
-# source /var/webapp/.env
-
-# # Export environment variables
-# export DB_HOST=$DB_HOST
-# export DB_USER=$DB_USER
-# export DB_PASSWORD=$DB_PASSWORD
-# export DB_NAME=$DB_NAME
-# export DB_PORT=$DB_PORT
-# export PORT=$PORT
-# export NODE_ENV=$NODE_ENV
-
-# Create a new user and database
-# sudo su - postgres -c "psql -c \"CREATE DATABASE ${DB_NAME};\""
-# sudo su - postgres -c "psql -c \"CREATE USER ${DB_USER} WITH PASSWORD '${DB_PASSWORD}';\""
-# sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE centos_db TO ${DB_USER};\""
-# sudo su - postgres -c "psql -c \"ALTER USER ${DB_USER} WITH SUPERUSER;\""
-
-
-# Export environment variables
-# sudo echo "PORT=5432" | sudo tee -a /var/webapp/webapp/.env
-# sudo echo "DB_USER=centos_user" | sudo tee -a /var/webapp/webapp/.env
-# sudo echo "DB_PASSWORD=centos_password" | sudo tee -a /var/webapp/webapp/.env
-# sudo echo "DB_NAME=centos_db" | sudo tee -a /var/webapp/webapp/.env
-# sudo echo "DB_HOST=localhost" | sudo tee -a /var/webapp/webapp/.env
-# sudo echo "DB_PORT=5432" | sudo tee -a /var/webapp/webapp/.env
-
-# sudo chown csye6225:csye6225 /var/webapp/webapp/.env
+# Create folder for logs
+sudo mkdir -p /var/log/webapp
+sudo chown -R csye6225:csye6225 /var/log/webapp
 
 # Install the dependencies for the webapp npm
 sudo npm install --prefix /usr/webapp/

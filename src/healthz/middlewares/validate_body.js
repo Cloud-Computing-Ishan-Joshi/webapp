@@ -4,9 +4,10 @@ const request_body = async(req, res, next) => {
     if (Object.keys(req.body).length || Object.keys(req.query).length) {
         res.set('Cache-Control', 'no-cache');
         logger.log({
-            level: 'error',
+            level: 'warn',
+            severity: 'warning',
             message: 'POST /healthz API path',
-            meta: 'Invalid request body'
+            meta: `Invalid request body 400`
         });
         res.status(400).send();
     } else {

@@ -27,6 +27,12 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
     if (!errors.isEmpty() || req.body.username) {
+        logger.log({
+            level: 'warn',
+            severity: 'warning',
+            message: 'PUT /v1/user/self API path',
+            meta: `Invalid request 400, ${errors.array()} `
+        });
         return res.status(400).send();
     }
     await User.findOne({
@@ -37,8 +43,9 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
         if (!user) {
             logger.log({
                 level: 'warn',
+                severity: 'warning',
                 message: 'PUT /v1/user/self API path',
-                meta: 'User not found'
+                meta: `User not found 403`
             });
             return res.status(403).end();
         }
@@ -48,17 +55,25 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
             const elapsed = end - req.start;
             logger.log({
                 level: 'info',
+                severity: 'info',
                 message: 'PUT /v1/user/self API path',
-                meta: `Success, Response time: ${elapsed}ms`
+                meta: `Success 204, Response time: ${elapsed}ms`
             });
             return res.status(204).end();
         }).catch((err) => {
+            logger.log({
+                level: 'error',
+                severity: 'error',
+                message: 'PUT /v1/user/self API path',
+                meta: err
+            });
             return res.status(500).end();
         });
 
     }).catch((err) => {
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'PUT /v1/user/self API path',
             meta: err
         });

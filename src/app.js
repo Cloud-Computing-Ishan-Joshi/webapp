@@ -22,6 +22,7 @@ const InitRun = async() => {
     } catch (error) {
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'App: Database connection failed',
             meta: error
         });
@@ -37,12 +38,14 @@ process.on('uncaughtException', (error, origin) => {
     console.log(error);
     logger.log({
         level: 'warn',
+        severity: 'warning',
         message: 'Uncaught exception',
         meta: error
     });
     logger.debug('----- Exception origin -----')
     logger.log({
         level: 'warn',
+        severity: 'warning',
         message: 'Exception origin',
         meta: origin
     });
@@ -54,6 +57,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log(promise);
     logger.log({
         level: 'warn',
+        severity: 'warning',
         message: 'Unhandled Rejection at',
         meta: promise
     });
@@ -61,6 +65,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log(reason);
     logger.log({
         level: 'warn',
+        severity: 'warning',
         message: 'Reason',
         meta: reason
     });
@@ -82,6 +87,7 @@ app.all('*', (req, res) => {
         console.log('Invalid request');
         logger.log({
             level: 'warn',
+            severity: 'warning',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: 'Invalid request'
         });

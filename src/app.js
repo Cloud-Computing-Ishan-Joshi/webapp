@@ -8,7 +8,7 @@ const handle_body = require('./user/utils/handle_errors');
 const db = require('./database/db');
 const User = require('./user/model/user');
 
-const {logger, setLabel} = require('./logs/logger');
+const {logger, setLabel} = require('./logging/logger');
 
 let syncrun = false;
 setLabel('APP INIT');

@@ -4,7 +4,7 @@ const db = require('../../database/db');
 const auth = require('../middlewares/auth');
 const validate_body = require('../middlewares/validate_body');
 
-const {logger, setLabel} = require('../../logs/logger');
+const {logger, setLabel} = require('../../logging/logger');
 
 setLabel('GET USER');
 

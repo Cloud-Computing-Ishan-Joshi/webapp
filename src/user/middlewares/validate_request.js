@@ -1,4 +1,4 @@
-const { logger } = require('../../logs/logger');
+const { logger } = require('../../logging/logger');
 
 const invalid_method = async(req, res, next) => {
     const allowedMethods = new Set(['POST']);

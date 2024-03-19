@@ -9,7 +9,7 @@ const auth = require('../middlewares/auth');
 
 const User = require('../model/user');
 
-const {logger, setLabel} = require('../../logs/logger');
+const {logger, setLabel} = require('../../logging/logger');
 
 setLabel('UPDATE USER');
 

@@ -6,7 +6,7 @@ const validate_body = require('../middlewares/validate_body');
 const validate_method = require('../middlewares/validate_request');
 
 const router = express.Router();
-const {logger, setLabel} = require('../../logs/logger');
+const {logger, setLabel} = require('../../logging/logger');
 
 setLabel('HEALTHZ');
 

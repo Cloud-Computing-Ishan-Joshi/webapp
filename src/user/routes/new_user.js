@@ -3,7 +3,7 @@ const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 const User = require('../../user/model/user');
 
-const {logger, setLabel} = require('../../logs/logger');
+const {logger, setLabel} = require('../../logging/logger');
 
 setLabel('CREATE USER');
 

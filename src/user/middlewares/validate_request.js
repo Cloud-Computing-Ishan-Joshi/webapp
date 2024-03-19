@@ -7,7 +7,7 @@ const invalid_method = async(req, res, next) => {
     if (req.path === '/user/self' && !allowedMethods_self.has(req.method)) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid request method: ${req.method} Status: 405`
         });
@@ -16,7 +16,7 @@ const invalid_method = async(req, res, next) => {
     if (req.path === '/user' && !allowedMethods.has(req.method)) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: `${req.method} ${req.originalUrl} API path`,
             meta: `Invalid request method: ${req.method} Status: 405`
         });

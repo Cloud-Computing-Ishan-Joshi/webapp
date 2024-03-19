@@ -11,7 +11,7 @@ User.sync().then(() => {
     if (process.env.NODE_ENV !== 'test') {
         logger.log({
             level: 'info',
-            severity: 'info',
+            severity: 'INFO',
             message: 'User model synchronized successfully'
         });
         // console.log('User model synchronized successfully');
@@ -36,7 +36,7 @@ router.post('/', validate_body, validate, async(req, res) => {
     if (!errors.isEmpty()) {
         logger.log({
             level: 'warn',
-            severity: 'warning',
+            severity: 'WARNING',
             message: 'POST /v1/user API path',
             meta: `Invalid request 400, ${errors.array()} `
         });
@@ -50,7 +50,7 @@ router.post('/', validate_body, validate, async(req, res) => {
         if (user) {
             logger.log({
                 level: 'warn',
-                severity: 'warning',
+                severity: 'WARNING',
                 message: 'POST /v1/user API path',
                 meta: `User already exists 400`
             });
@@ -61,7 +61,7 @@ router.post('/', validate_body, validate, async(req, res) => {
             console.log('Error finding user');
             logger.log({
                 level: 'error',
-                severity: 'error',
+                severity: 'ERROR',
                 message: 'POST /v1/user API path',
                 meta: err
             });
@@ -76,7 +76,7 @@ router.post('/', validate_body, validate, async(req, res) => {
         const elapsed = end - req.start;
         logger.log({
             level: 'info',
-            severity: 'info',
+            severity: 'INFO',
             message: 'POST /v1/user API path',
             meta: `Success 201, Response time: ${elapsed}ms`
         });
@@ -84,7 +84,7 @@ router.post('/', validate_body, validate, async(req, res) => {
     } catch (err) {
         logger.log({
             level: 'error',
-            severity: 'error',
+            severity: 'ERROR',
             message: 'POST /v1/user API path',
             meta: err
         });

@@ -4,9 +4,10 @@ const onlyJsonBody = (req, res, next) => {
     res.set('cache-control', 'no-cache');
     if (req.headers['content-type'] !== 'application/json') {
         logger.log({
-            level: 'error',
+            level: 'warn',
+            severity: 'warning',
             message: `${req.method} ${req.originalUrl} API path`,
-            meta: 'Invalid request body'
+            meta: `Invalid content-type ${415}`
         });
         return res.status(415).end();
     } else {

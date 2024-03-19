@@ -26,16 +26,24 @@ router.get('/self', auth, validate_body, async(req, res) => {
             const elapsed = end - req.start;
             logger.log({
                 level: 'info',
+                severity: 'info',
                 message: 'GET /v1/user/self API path',
-                meta: `Success, Response time: ${elapsed}ms`
+                meta: `Success ${200}, Response time: ${elapsed}ms`
             })
             return res.status(200).send(user);
         } else {
+            logger.log({
+                level: 'warn',
+                severity: 'warning',
+                message: 'GET /v1/user/self API path',
+                meta: `User not found ${403}`
+            });
             return res.status(403).send();
         }
     } catch (err) {
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'GET /v1/user/self API path',
             meta: err
         })

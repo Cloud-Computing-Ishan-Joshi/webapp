@@ -7,9 +7,10 @@ async function verifyAuth(req, res, next) {
     const auth = basicAuth(req);
     if (!auth || !auth.name || !auth.pass) {
         logger.log({
-            level: 'error',
+            level: 'warn',
+            severity: 'warning',
             message: `${req.method} ${req.originalUrl} API path`,
-            meta: 'Invalid credentials'
+            meta: `Invalid credentials ${401}`
         });
         return res.status(401).end();
     }
@@ -22,9 +23,10 @@ async function verifyAuth(req, res, next) {
 
     if (!user || !await user.comparePassword(auth.pass)) {
         logger.log({
-            level: 'error',
+            level: 'warn',
+            severity: 'warning',
             message: `${req.method} ${req.originalUrl} API path`,
-            meta: 'Invalid credentials'
+            meta: `Invalid credentials ${403}`
         });
         return res.status(403).end();
     }

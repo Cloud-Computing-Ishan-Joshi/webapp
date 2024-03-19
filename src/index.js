@@ -14,6 +14,7 @@ const start = async() => {
         console.log('DB_NAME not found');
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'Process exited with code 1',
             meta: 'DB_NAME not found'
         });
@@ -23,6 +24,7 @@ const start = async() => {
         console.log('DB_USER not found');
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'Process exited with code 1',
             meta: 'DB_USER not found'
         });
@@ -32,6 +34,7 @@ const start = async() => {
         console.log('DB_PASSWORD not found');
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'Process exited with code 1',
             meta: 'DB_PASSWORD not found'
         });
@@ -41,6 +44,7 @@ const start = async() => {
         console.log('DB_HOST not found');
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'Process exited with code 1',
             meta: 'DB_HOST not found'
         });
@@ -50,6 +54,7 @@ const start = async() => {
         console.log('NODE_ENV not found');
         logger.log({
             level: 'error',
+            severity: 'error',
             message: 'Process exited with code 1',
             meta: 'NODE_ENV not found'
         });
@@ -65,6 +70,7 @@ server.listen(PORT, () => {
     // console.log(`App running on Port: ${PORT}.`)
     logger.log({
         level: 'info',
+        severity: 'info',
         message: `App running`,
         meta: `Port: ${PORT}`  
     });

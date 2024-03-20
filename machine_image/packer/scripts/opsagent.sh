@@ -14,10 +14,15 @@ logging:
         - /var/log/webapp/webapp.log
       record_log_file_path: true
   processors:
+    # move_severity:
+    #   type: modify_fields
     my-app-processor:
       type: parse_json
       time_key: time
       time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      fields:
+        severity:
+        move_from: jsonPayload.severity
   service:
     pipelines:
       default_pipeline:

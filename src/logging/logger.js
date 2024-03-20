@@ -14,6 +14,7 @@ function setLabel(label) {
 
 const logger = winston.createLogger({
     level: 'info',
+    severity: 'INFO',
     format: combine(
       label({ label: LABEL }),
       timestamp("%Y-%m-%dT%H:%M:%S.%L%Z"),

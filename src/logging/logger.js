@@ -17,7 +17,7 @@ const logger = winston.createLogger({
     severity: 'INFO',
     format: combine(
       label({ label: LABEL }),
-      timestamp("%Y-%m-%dT%H:%M:%S.%L%Z"),
+      timestamp("%Y-%m-%dT%H:%M:%S.%LZ"),
       winston.format.json(),
       // prettyPrint()
       // myFormat

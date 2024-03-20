@@ -22,7 +22,7 @@ logging:
     my-app-processor:
       type: parse_json
       time_key: timestamp
-      time_format: "%Y-%m-%dT%H:%M:%S.%L%Z"
+      time_format: "%Y-%m-%dT%H:%M:%S.%LZ"
   service:
     pipelines:
       default_pipeline:

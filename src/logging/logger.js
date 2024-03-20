@@ -7,11 +7,16 @@ function setLabel(label) {
   LABEL = label;
 }
 
+var file_path = '/var/log/webapp/webapp.log';
+
 // const myFormat = printf(({ level, message, label, timestamp }) => {
 //   return `${timestamp} [${label}] ${level}: ${message}`;
 // });
 
-
+if (process.env.NODE_ENV === 'test') {
+  LABEL = 'TEST';
+  file_path = './test.log';
+}
 const logger = winston.createLogger({
     level: 'info',
     severity: 'INFO',
@@ -24,7 +29,7 @@ const logger = winston.createLogger({
     ),
     transports: [
       new winston.transports.Console(),
-      new winston.transports.File({ filename: '/var/log/webapp/webapp.log' }), // Save log file in /var/ folder
+      new winston.transports.File({ filename: file_path }), // Save log file in /var/ folder
       // new winston.transports.File({ filename: 'application.log' }), // Save log file in /var/ folder
       // new LoggingWinston({
       //   projectId: 'your-project-id',

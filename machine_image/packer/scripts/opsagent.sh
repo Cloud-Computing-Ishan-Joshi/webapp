@@ -18,7 +18,7 @@ logging:
       type: modify_fields
       fields:
         severity:
-        move_from: jsonPayload.severity
+          move_from: jsonPayload.severity
     my-app-processor:
       type: parse_json
       time_key: time
@@ -27,7 +27,7 @@ logging:
     pipelines:
       default_pipeline:
         receivers: [my-app-receiver]
-        processors: [my-app-processor]
+        processors: [my-app-processor, move_severity]
 " | sudo tee -a /etc/google-cloud-ops-agent/config.yaml
 
 sudo systemctl restart google-cloud-ops-agent

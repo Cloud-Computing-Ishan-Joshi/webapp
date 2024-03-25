@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../app');
 const faker = require('faker');
+const { log } = require('winston');
+let response_post;
 
 describe('Healthz check endpoint', () => {
     test('should return 200 Status when database is connected', async() => {
@@ -65,19 +67,50 @@ describe('User endpoint', () => {
         };
         try {
             response = await request(app).post('/v1/user').send(request_body);
+            response_post = await response;
             expect(response.statusCode).toBe(201);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
             console.log(err);
         }
     });
+    test('should return 403 Status code when user is not verified', async() => {
+        const basic_auth = {
+            username: username,
+            password: password
+        };
+        try {
+            const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
+            expect(response.statusCode).toBe(403);
+            expect(response.headers['cache-control']).toBe('no-cache');
+        } catch (err) {
+            console.log(err);
+        }
+    });
 
+    test('should return 204 Status code when user is verified', async() => {
+        const basic_auth = {
+            username: username,
+            password: password
+        };
+        try {
+            // console.log();
+            const response = await request(app).get(`/v1/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
+            expect(response.statusCode).toBe(204);
+            expect(response.headers['cache-control']).toBe('no-cache');
+        }
+        catch (err) {
+            console.log(err);
+        }
+    });
+    
     test('should return 200 Status code and User', async() => {
         const basic_auth = {
             username: username,
             password: password
         };
         try {
+            await request(app).get(`/v1/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
             const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(200);
             expect(response.body.first_name).toBe(first_name);

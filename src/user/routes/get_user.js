@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('../../database/db');
 const auth = require('../middlewares/auth');
 const validate_body = require('../middlewares/validate_body');
+const verifyUser = require('../middlewares/verify_user');
 
 const {logger, setLabel} = require('../../logging/logger');
 
@@ -11,7 +12,7 @@ setLabel('GET USER');
 const router = express.Router();
 
 
-router.get('/self', auth, validate_body, async(req, res) => {
+router.get('/self', auth, verifyUser, validate_body, async(req, res) => {
     logger.debug('GET /v1/user/self API path');
     res.set('cache-control', 'no-cache');
     try {
@@ -46,7 +47,13 @@ router.get('/self', auth, validate_body, async(req, res) => {
             severity: 'ERROR',
             message: 'GET /v1/user/self API path',
             meta: err
-        })
+        });
+        logger.log({
+            level: 'debug',
+            severity: 'DEBUG',
+            message: `GET /v1/user/self/${req.params.token} API path`,
+            meta: err
+        });
         return res.status(500).send();
     }
 });

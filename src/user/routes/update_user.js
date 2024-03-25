@@ -10,6 +10,7 @@ const auth = require('../middlewares/auth');
 const User = require('../model/user');
 
 const {logger, setLabel} = require('../../logging/logger');
+const verifyUser = require('../middlewares/verify_user');
 
 setLabel('UPDATE USER');
 
@@ -22,7 +23,7 @@ const validate = [
     check('username').optional({ checkFalsy: true }).isEmail()
 ];
 
-router.put('/self', validate_method, validate_body, auth, validate, async(req, res) => {
+router.put('/self', validate_method, auth, validate_body, verifyUser, validate, async(req, res) => {
     logger.debug('PUT /v1/user/self API path');
     res.set('cache-control', 'no-cache');
     const errors = validationResult(req);
@@ -75,6 +76,12 @@ router.put('/self', validate_method, validate_body, auth, validate, async(req, r
             level: 'error',
             severity: 'ERROR',
             message: 'PUT /v1/user/self API path',
+            meta: err
+        });
+        logger.log({
+            level: 'debug',
+            severity: 'DEBUG',
+            message: `GET /v1/user/self/${req.params.token} API path`,
             meta: err
         });
         return res.status(500).end();

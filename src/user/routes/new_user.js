@@ -88,6 +88,12 @@ router.post('/', validate_body, validate, async(req, res) => {
             message: 'POST /v1/user API path',
             meta: err
         });
+        logger.log({
+            level: 'debug',
+            severity: 'DEBUG',
+            message: `GET /v1/user/self/${req.params.token} API path`,
+            meta: err
+        });
         return res.status(500).end();
     }
 });

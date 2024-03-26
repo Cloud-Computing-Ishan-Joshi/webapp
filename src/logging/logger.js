@@ -7,7 +7,7 @@ function setLabel(label) {
   LABEL = label;
 }
 
-var file_path = './webapp.log';
+var file_path = '/var/log/webapp/webapp.log';
 
 // const myFormat = printf(({ level, message, label, timestamp }) => {
 //   return `${timestamp} [${label}] ${level}: ${message}`;

@@ -2,6 +2,7 @@ const express = require('express');
 const { check, validationResult } = require('express-validator');
 // const jwt = require('jsonwebtoken');
 const User = require('../../user/model/user');
+const publish_message = require('../utils/publish_message');
 
 const {logger, setLabel} = require('../../logging/logger');
 
@@ -71,7 +72,19 @@ router.post('/', validate_body, validate, async(req, res) => {
     });
     try {
         const user = await User.create(req.body);
-        // log response time and success
+        // access the global publisher object
+        const data = {
+            first_name: user.first_name,
+            username: user.username,
+            token: user.token 
+        };
+        const messageId = await publish_message(process.env.TOPIC_NAME, JSON.stringify(data));
+        logger.log({
+            level: 'info',
+            severity: 'INFO',
+            message: 'PubSub Message published',
+            meta: `Message ${messageId} published`
+        });
         const end = Date.now();
         const elapsed = end - req.start;
         logger.log({

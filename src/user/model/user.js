@@ -45,7 +45,7 @@ const User = db.define('User', {
     hooks: {
         beforeUpdate: (user, options) => {
             const check_token_expired = new Date(user.token_expired) < new Date();
-            if (check_token_expired) {
+            if (check_token_expired && user.verify !== 'verified') {
                 user.verify = 'expired';
             }
             if (user.changed('username')) {
@@ -55,7 +55,7 @@ const User = db.define('User', {
         afterFind: async(user, options) => {
             if (user) {
                 const check_token_expired = new Date(user.token_expired) < new Date();
-                if (check_token_expired) {
+                if (check_token_expired && user.verify !== 'verified') {
                     user.verify = 'expired';
                     await user.save();
                 }

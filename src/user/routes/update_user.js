@@ -2,7 +2,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
 
-const db = require('../../database/db');
 const validate_body = require('../middlewares/validate_body');
 const validate_method = require('../middlewares/validate_request');
 const auth = require('../middlewares/auth');

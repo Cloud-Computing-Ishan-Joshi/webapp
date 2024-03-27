@@ -43,7 +43,7 @@ router.post('/', validate_body, validate, async(req, res) => {
         });
         return res.status(400).end();
     }
-    User.findOne({
+    await User.findOne({
         where: {
             username: req.body.username
         }
@@ -78,13 +78,16 @@ router.post('/', validate_body, validate, async(req, res) => {
             username: user.username,
             token: user.token 
         };
-        const messageId = await publish_message(process.env.TOPIC_NAME, JSON.stringify(data));
-        logger.log({
-            level: 'info',
-            severity: 'INFO',
-            message: 'PubSub Message published',
-            meta: `Message ${messageId} published`
-        });
+        if (process.env.NODE_ENV !== 'test') {
+
+            const messageId = await publish_message(process.env.TOPIC_NAME, JSON.stringify(data));
+            logger.log({
+                level: 'info',
+                severity: 'INFO',
+                message: 'PubSub Message published',
+                meta: `Message ${messageId} published`
+            });
+        }
         const end = Date.now();
         const elapsed = end - req.start;
         logger.log({

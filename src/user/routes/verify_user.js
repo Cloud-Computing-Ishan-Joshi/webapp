@@ -1,21 +1,22 @@
 // Code to verify user token
 const express = require('express');
-const db = require('../../database/db');
+const User = require('../model/user');
 const auth = require('../middlewares/auth');
 const validate_body = require('../middlewares/validate_body');
 
 const {logger, setLabel} = require('../../logging/logger');
+const { log } = require('winston');
 
 setLabel('VERIFY USER');
 
 const router = express.Router();
 
 
-router.get('/self/:token', auth, validate_body, async(req, res) => {
+router.get('/self/:token', validate_body, async(req, res) => {
     logger.debug(`GET /v1/user/self/${req.params.token} API path`);
     res.set('cache-control', 'no-cache');
     try {
-        const user = await db.models.User.findOne({
+        const user = await User.findOne({
             where: {
                 token: req.params.token
             }

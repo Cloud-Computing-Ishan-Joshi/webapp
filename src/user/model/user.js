@@ -21,7 +21,8 @@ const User = db.define('User', {
         is: {
             args: /^(.+)@(.+)\.(.+)$/,
             msg: 'Email format is invalid',
-        }
+        },
+        unique: true
     },
     // verify : has only three status : created, verified, expired
     verify: {

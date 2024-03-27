@@ -1,6 +1,6 @@
 // Coode to get user details
 const express = require('express');
-const db = require('../../database/db');
+const User = require('../model/user');
 const auth = require('../middlewares/auth');
 const validate_body = require('../middlewares/validate_body');
 const verifyUser = require('../middlewares/verify_user');
@@ -16,7 +16,7 @@ router.get('/self', auth, verifyUser, validate_body, async(req, res) => {
     logger.debug('GET /v1/user/self API path');
     res.set('cache-control', 'no-cache');
     try {
-        const user = await db.models.User.findOne({
+        const user = await User.findOne({
             where: {
                 username: req.user.username
             }

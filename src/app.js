@@ -37,15 +37,15 @@ process.on('uncaughtException', (error, origin) => {
     logger.debug('----- Uncaught exception -----')
     console.log(error);
     logger.log({
-        level: 'warn',
-        severity: 'WARNING',
+        level: 'debug',
+        severity: 'DEBUG',
         message: 'Uncaught exception',
         meta: error
     });
     logger.debug('----- Exception origin -----')
     logger.log({
-        level: 'warn',
-        severity: 'WARNING',
+        level: 'debug',
+        severity: 'DEBUG',
         message: 'Exception origin',
         meta: origin
     });
@@ -56,16 +56,16 @@ process.on('unhandledRejection', (reason, promise) => {
     logger.debug('----- Unhandled Rejection at -----')
     console.log(promise);
     logger.log({
-        level: 'warn',
-        severity: 'WARNING',
+        level: 'debug',
+        severity: 'DEBUG',
         message: 'Unhandled Rejection at',
         meta: promise
     });
     logger.debug('----- Reason -----')
     console.log(reason);
     logger.log({
-        level: 'warn',
-        severity: 'WARNING',
+        level: 'debug',
+        severity: 'DEBUG',
         message: 'Reason',
         meta: reason
     });

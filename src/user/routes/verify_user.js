@@ -12,7 +12,7 @@ setLabel('VERIFY USER');
 const router = express.Router();
 
 
-router.get('/self/:token', validate_body, async(req, res) => {
+router.get('/self/:token', async(req, res) => {
     logger.debug(`GET /v1/user/self/${req.params.token} API path`);
     res.set('cache-control', 'no-cache');
     try {

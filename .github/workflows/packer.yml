@@ -2,10 +2,10 @@ name: packer-runner
 
 on:
   # Trigger the workflow on puill request and is merge
-  # push:
-  pull_request:
-    types: [closed]
-    branches: [main, log]
+  push:
+  # pull_request:
+    # types: [closed]
+    branches: [main, cd]
   
 jobs:
   # job_id:
@@ -17,11 +17,52 @@ jobs:
   build:
     name: packer-runner
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
+    # if: github.event.pull_request.merged == true
 
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      
+      - name: Use ${{matrix.node-version}} to setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Postgres and Config
+        run: |
+          sudo apt-get install postgresql postgresql-contrib
+          sudo systemctl start postgresql
+          sudo systemctl enable postgresql
+          sudo systemctl status postgresql
+          # # replace ident to scram-sha-256
+          # sudo sed -i "s/ident/scram-sha-256/g" /etc/postgresql/15/main/pg_hba.conf
+          # # uncomment listen_addresses
+          # sudo sed -i "s/#listen_addresses = 'localhost'/listen_addresses = 'localhost'/g" /etc/postgresql/15/main/postgresql.conf
+          # # uncomment port
+          # sudo sed -i "s/#port = 5432/port = 5432/g" /etc/postgresql/15/main/postgresql.conf
+          # sudo systemctl restart postgresql
+          # sudo systemctl status postgresql
+          sudo su - postgres -c "psql -c \"CREATE DATABASE ${{env.DB_NAME}};\""
+          sudo su - postgres -c "psql -c \"CREATE USER ${{env.DB_USER}} WITH PASSWORD '${{env.DB_PASSWORD}}';\""
+          sudo su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE ${{env.DB_NAME}} TO ${{env.DB_USER}};\""
+        env:
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_USER_ORIG: ${{ secrets.DB_USER_ORIG }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Run Healthz test
+        run: npm run test:cli
+        env:
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          PORT: ${{ secrets.PORT }}
+          NODE_ENV: test
 
       - name: 'Authenticate with Google Cloud'
         uses: 'google-github-actions/auth@v2'
@@ -38,25 +79,8 @@ jobs:
           sudo mv packer /usr/local/bin
           packer --version
       
-      # - name: Create .env
-      #   run: |
-      #     touch .env
-      #     sudo echo "PORT=${{ secrets.PORT }}" | sudo tee -a .env
-      #     sudo echo "DB_HOST=${{ secrets.DB_HOST }}" | sudo tee -a .env
-      #     sudo echo "DB_USER=${{ secrets.DB_USER }}" | sudo tee -a .env
-      #     sudo echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" | sudo tee -a .env
-      #     sudo echo "DB_NAME=${{ secrets.DB_NAME }}" | sudo tee -a .env
-      #     sudo echo "DB_PORT=${{ secrets.DB_PORT }}" | sudo tee -a .env
-      #     sudo echo "NODE_ENV=${{ secrets.NODE_ENV }}" | sudo tee -a .env
-      
       - name: Zip the files
         run: zip -r webapp.zip . -x \\node_modules\\ \\.git\\ 
-
-      # - name: Upload the zip file
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: webapp
-      #     path: webapp.zip
 
       - name: Pack the files
         run: packer init machine_image/packer/gcp.pkr.hcl
@@ -69,10 +93,79 @@ jobs:
       #     export_default_credentials: true
 
       # Use the GCP Credentials to run Packer build
-      - name: Run Packer
-        run: packer build -force -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'image_name=${{ secrets.IMAGE_NAME }}' -var 'zone=${{ secrets.ZONE }}' -var 'image_storage_locations=${{ secrets.IMAGE_STORAGE_LOCATIONS }}' machine_image/packer/gcp.pkr.hcl
+      # - name: Run Packer
+        # run: packer build -force -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'image_name=${{ secrets.IMAGE_NAME }}' -var 'zone=${{ secrets.ZONE }}' -var 'image_storage_locations=${{ secrets.IMAGE_STORAGE_LOCATIONS }}' machine_image/packer/gcp.pkr.hcl
 
 
       # - name: Run Packer
       #   run: packer build -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'source_image=${{ secrets.SOURCE_IMAGE }}' -var 'zone=${{ secrets.ZONE }}
+      # Create a new Instance Template version
+      - name: Create New Instance Template
+        run: |
+          gcloud beta compute instance-templates create webapp-instance-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --machine-type=e2-medium \
+            --network-interface=network-tier=STANDARD,subnet=vpc2-webapp \
+            --instance-template-region=${{ secrets.REGION }} \
+            --metadata=startup-script='#!/bin/bash
 
+              mkdir -p /usr/env_webapp
+
+              # Create or overwrite the .env file
+              cat <<EOF > /usr/env_webapp/.env
+              DB_HOST=${{ secrets.DB_HOST_CLOUD }}
+              DB_USER=${{ secrets.DB_USER_CLOUD }}
+              DB_PASSWORD=${{ secrets.DB_PASSWORD_CLOUD }}
+              DB_NAME=${{ secrets.DB_NAME_CLOUD }}
+              NODE_ENV=${{ secrets.NODE_ENV }}
+              PROJECT_ID=${{ secrets.PROJECT_ID }}
+              TOPIC_NAME=${{ secrets.TOPIC_NAME }}
+              EOF
+              
+              # Set permissions
+              chmod 655 /usr/env_webapp/.env
+              chown csye6225:csye6225 /usr/env_webapp/.env
+
+              # Run the application service
+              sudo systemctl start webapp
+              sudo systemctl start google-cloud-ops-agent' \
+            --maintenance-policy=MIGRATE \
+            --provisioning-model=STANDARD \
+            --service-account=webapp-sa@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
+            --scopes=["https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/pubsub"] \
+            --region=${{ secrets.REGION }} \
+            --tags=["vpc2-webapp", "http-server"] \
+            --create-disk=auto-delete=yes,boot=yes,device-name=persistent-disk-0,image=projects/${{ secrets.GOOGLE_PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }},mode=rw,size=20,type=pd-standard \
+            --no-shielded-secure-boot --shielded-vtpm --shielded-integrity-monitoring \
+            --reservation-affinity=any
+      # - Update the Instance Group with the new Instance Template
+      - name: Update Instance Group
+        run: |
+          gcloud compute instance-groups managed set-instance-template webapp-group-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.ZONE }} \
+            --template=webapp-instance-${{ github.sha }} \
+            --size=1
+      # Start Rolling Update
+      - name: Start Rolling Update
+        run: |
+          gcloud compute instance-groups managed rolling-action start-update webapp-group-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.ZONE }} \
+            --version=webapp-instance-${{ github.sha }} \
+            --type=proactive
+      # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
+      - name: Wait for Rolling Update to complete
+        run: |
+          gcloud compute instance-groups managed wait-until-stable webapp-group-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.ZONE }} \
+            --timeout=10m
+
+      # Status failed then exit with error
+      - name: Check Rolling Update Status
+        run: |
+          gcloud compute instance-groups managed describe webapp-group-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.ZONE }} \
+            --format=json | jq -r '.status' | grep -q "RUNNING" || exit 1

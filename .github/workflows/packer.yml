@@ -195,12 +195,12 @@ jobs:
             --template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
 
       # Start Rolling Update
-      - name: Start Rolling Update  
+      - name: Start Rolling Update
         run: |
-          gcloud compute instance-groups managed rolling-action start-update webapp-group-${{ github.sha }} \
+          gcloud compute instance-groups managed rolling-action start-update ***-group-5a18519eb670cfbbee95da98a07fc9f2c0532559 \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
-            --version=webapp-instance-${{ github.sha }} \
+            --version=template=webapp-instance-${{ github.sha }} \
             --type=proactive
       # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
       - name: Wait for Rolling Update to complete

@@ -194,26 +194,40 @@ jobs:
             --region=${{ secrets.REGION }} \
             --template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
 
-      # Start Rolling Update
-      - name: Start Rolling Update
+      # # Start Rolling Update
+      # - name: Start Rolling Update
+      #   run: |
+      #     gcloud compute instance-groups managed rolling-action start-update vpc2-webapp-instance-group \
+      #       --project=${{ secrets.PROJECT_ID }} \
+      #       --region=${{ secrets.REGION }} \  # Use region for regional instance groups
+      #       --version template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
+
+      # # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
+      # - name: Wait for Rolling Update to complete
+      #   run: |
+      #     gcloud compute instance-groups managed wait-until-stable vpc2-webapp-instance-group \
+      #       --project=${{ secrets.PROJECT_ID }} \
+      #       --zone=${{ secrets.ZONE }} \
+      #       --timeout=10m
+
+      # # Status failed then exit with error
+      # - name: Check Rolling Update Status
+      #   run: |
+      #     gcloud compute instance-groups managed describe vpc2-webapp-instance-group \
+      #       --project=${{ secrets.PROJECT_ID }} \
+      #       --zone=${{ secrets.ZONE }} \
+      #       --format=json | jq -r '.status' | grep -q "RUNNING" || exit 1
+      
+      - name: Update instances inside instance group manager
         run: |
           gcloud compute instance-groups managed rolling-action start-update vpc2-webapp-instance-group \
-            --project=${{ secrets.PROJECT_ID }} \
-            --region=${{ secrets.REGION }} \  # Use region for regional instance groups
-            --version template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
+              --version='template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}' \
+              --region=${{ secrets.REGION }} \
+              --quiet
 
-      # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
-      - name: Wait for Rolling Update to complete
+      - name: Wait for instances to be updated and running
         run: |
-          gcloud compute instance-groups managed wait-until-stable vpc2-webapp-instance-group \
-            --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.ZONE }} \
-            --timeout=10m
-
-      # Status failed then exit with error
-      - name: Check Rolling Update Status
-        run: |
-          gcloud compute instance-groups managed describe vpc2-webapp-instance-group \
-            --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.ZONE }} \
-            --format=json | jq -r '.status' | grep -q "RUNNING" || exit 1
+          gcloud config set project ${{secrets.PROJECT_ID}}
+          gcloud compute instance-groups managed wait-until vpc2-webapp-instance-group \
+              --region=${{ secrets.REGION }} \
+              --stable

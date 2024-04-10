@@ -192,10 +192,10 @@ jobs:
           gcloud compute instance-groups managed set-instance-template vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
-            --template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
+            --template=webapp-instance-${{ github.sha }}
 
       # Start Rolling Update
-      - name: Start Rolling Update
+      - name: Start Rolling Update  
         run: |
           gcloud compute instance-groups managed rolling-action start-update webapp-group-${{ github.sha }} \
             --project=${{ secrets.PROJECT_ID }} \

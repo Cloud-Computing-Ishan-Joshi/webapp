@@ -200,12 +200,14 @@ jobs:
           gcloud compute instance-groups managed rolling-action start-update vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
-            --version=template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }} \
-            --type=proactive
+            --version template=webapp-instance-${{ github.sha }} \
+            --max-surge 1 \
+            --max-unavailable 1 \
+            --min-ready 60s
       # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
       - name: Wait for Rolling Update to complete
         run: |
-          gcloud compute instance-groups managed wait-until-stable webapp-group-${{ github.sha }} \
+          gcloud compute instance-groups managed wait-until-stable vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
             --timeout=10m
@@ -213,7 +215,7 @@ jobs:
       # Status failed then exit with error
       - name: Check Rolling Update Status
         run: |
-          gcloud compute instance-groups managed describe webapp-group-${{ github.sha }} \
+          gcloud compute instance-groups managed describe vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
             --format=json | jq -r '.status' | grep -q "RUNNING" || exit 1

@@ -189,7 +189,7 @@ jobs:
       # - name: Update Instance Group
       - name: Update Instance Group
         run: |
-          gcloud compute instance-groups managed set-instance-template vpc2-***-instance-group \
+          gcloud compute instance-groups managed set-instance-template vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
             --template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}

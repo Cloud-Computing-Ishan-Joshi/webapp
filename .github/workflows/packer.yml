@@ -139,7 +139,7 @@ jobs:
             # Run the application service
             sudo systemctl start webapp
             sudo systemctl start google-cloud-ops-agent' \
-            --quiet
+            --verbosity=debug
       
 
       # - name: Create New Instance Template

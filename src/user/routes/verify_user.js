@@ -47,11 +47,11 @@ router.get('/self/:token', async(req, res) => {
                     message: `GET /v1/user/self/${req.params.token} API path`,
                     meta: `Success ${200}, Response time: ${elapsed}ms`
                 })
-                return res.status(200).send(
+                return res.status(200).json(
                     {
                         message: 'User verified successfully'
                     }
-                ).end();
+                );
             } else {
                 logger.log({
                     level: 'warn',

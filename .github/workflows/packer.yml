@@ -188,6 +188,7 @@ jobs:
       # - Update the Instance Group with the new Instance Template
       # - name: Update Instance Group
 
+      # Create a new Instance Template version
       - name: Create instance template
         run: |
           DB_PASSWORD=$(gcloud secrets versions access latest --secret=${{ secrets.DB_PASSWORD_CLOUD_NAME }})

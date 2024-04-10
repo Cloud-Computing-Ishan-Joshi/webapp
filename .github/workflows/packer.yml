@@ -106,14 +106,14 @@ jobs:
             --machine-type=e2-medium \
             --instance-template-region=${{ secrets.REGION }} \
             --region=${{ secrets.REGION }} \
-            --tags=vpc2-webapp,https-server \
+            --tags=vpc2-webapp,http-server \
             --image=projects/${{ secrets.PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
             --boot-disk-size=40 \
             --boot-disk-type=pd-ssd \
             --boot-disk-device-name=terraform-instance \
             --network=vpc2 \
             --subnet=vpc2-webapp \
-            --service-account=ops-agent@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
+            --service-account=ops-agent-service-account-vpc2@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
             --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
             --no-boot-disk-auto-delete \
             --boot-disk-kms-key=projects/dev-1-415017/locations/us-east1/keyRings/vpc2-key-ring4/cryptoKeys/vpc2-vm-crypto-key \
@@ -186,12 +186,17 @@ jobs:
       #       --boot-disk-kms-key=projects/dev-1-415017/locations/us-east1/keyRings/vpc2-key-ring4/cryptoKeys/vpc2-vm-crypto-key 
       #       --quiet
       # - Update the Instance Group with the new Instance Template
+      # - name: Update Instance Group
       - name: Update Instance Group
         run: |
           gcloud compute instance-groups managed set-instance-template webapp-group-${{ github.sha }} \
             --project=${{ secrets.PROJECT_ID }} \
             --zone=${{ secrets.ZONE }} \
-            --template=webapp-instance-${{ github.sha }} \
+            --template=webapp-instance-${{ github.sha }}
+          
+          gcloud compute instance-groups managed resize webapp-group-${{ github.sha }} \
+            --project=${{ secrets.PROJECT_ID }} \
+            --zone=${{ secrets.ZONE }} \
             --size=1
       # Start Rolling Update
       - name: Start Rolling Update

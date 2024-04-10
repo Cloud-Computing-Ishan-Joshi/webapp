@@ -199,8 +199,9 @@ jobs:
         run: |
           gcloud compute instance-groups managed rolling-action start-update vpc2-webapp-instance-group \
             --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.ZONE }} \
+            --region=${{ secrets.REGION }} \  # Use region for regional instance groups
             --version template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }}
+
       # - Wait till the Rolling Update is completed and then after sucessful completion exit the script and if failed then exit with error
       - name: Wait for Rolling Update to complete
         run: |

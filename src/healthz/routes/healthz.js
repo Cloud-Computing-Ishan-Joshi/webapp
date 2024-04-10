@@ -21,7 +21,7 @@ router.all('/healthz', validate_method, validate_body, async(req, res) => {
         logger.log({
             level: 'info',
             severity: 'INFO',
-            message: 'NEW GET /healthz API path',
+            message: 'GET /healthz API path',
             meta: `Success 200, Response time: ${elapsed}ms`
         });
         res.status(200).send();

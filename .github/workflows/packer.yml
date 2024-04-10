@@ -189,15 +189,11 @@ jobs:
       # - name: Update Instance Group
       - name: Update Instance Group
         run: |
-          gcloud compute instance-groups managed set-instance-template vpc2-webapp-instance-group \
-            --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.ZONE }} \
-            --template=webapp-instance-${{ github.sha }}
-          
-          gcloud compute instance-groups managed resize webapp-group-${{ github.sha }} \
-            --project=${{ secrets.PROJECT_ID }} \
-            --zone=${{ secrets.ZONE }} \
-            --size=1
+          gcloud compute instance-groups managed set-instance-template vpc2-***-instance-group \
+          --project=${{ secrets.PROJECT_ID }} \
+          --zone=${{ secrets.ZONE }} \  # Replace with the actual region
+          --template=projects/${{ secrets.PROJECT_ID }}/regions/${{ secrets.REGION }}/instanceTemplates/webapp-instance-${{ github.sha }} \
+      
       # Start Rolling Update
       - name: Start Rolling Update
         run: |

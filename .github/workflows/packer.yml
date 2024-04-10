@@ -100,46 +100,46 @@ jobs:
       # - name: Run Packer
       #   run: packer build -var 'project_id=${{ secrets.PROJECT_ID }}' -var 'image_family=${{ secrets.IMAGE_FAMILY}}' -var 'source_image=${{ secrets.SOURCE_IMAGE }}' -var 'zone=${{ secrets.ZONE }}
       # Create a new Instance Template version
-      - name: Create instance template
-        run: |
-          gcloud compute instance-templates create webapp-instance-${{ github.sha }} \
-            --machine-type=e2-medium \
-            --instance-template-region=${{ secrets.REGION }} \
-            --region=${{ secrets.REGION }} \
-            --tags=vpc2-webapp,http-server \
-            --image=projects/${{ secrets.PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
-            --boot-disk-size=40 \
-            --boot-disk-type=pd-ssd \
-            --boot-disk-device-name=terraform-instance \
-            --network=vpc2 \
-            --subnet=vpc2-webapp \
-            --service-account=ops-agent-service-account-vpc2@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
-            --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
-            --no-boot-disk-auto-delete \
-            --boot-disk-kms-key=$(gcloud secrets versions access latest --secret=${{ secrets.VM_KMS_KEY_NAME }}) \
-            --metadata startup-script='#!/bin/bash
+      # - name: Create instance template
+      #   run: |
+      #     gcloud compute instance-templates create webapp-instance-${{ github.sha }} \
+      #       --machine-type=e2-medium \
+      #       --instance-template-region=${{ secrets.REGION }} \
+      #       --region=${{ secrets.REGION }} \
+      #       --tags=vpc2-webapp,http-server \
+      #       --image=projects/${{ secrets.PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
+      #       --boot-disk-size=40 \
+      #       --boot-disk-type=pd-ssd \
+      #       --boot-disk-device-name=terraform-instance \
+      #       --network=vpc2 \
+      #       --subnet=vpc2-webapp \
+      #       --service-account=ops-agent-service-account-vpc2@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
+      #       --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
+      #       --no-boot-disk-auto-delete \
+      #       --boot-disk-kms-key=$(gcloud secrets versions access latest --secret=${{ secrets.VM_KMS_KEY_NAME }}) \
+      #       --metadata startup-script='#!/bin/bash
           
-            mkdir -p /usr/env_webapp
+      #       mkdir -p /usr/env_webapp
           
-            # Create or overwrite the .env file
-            cat <<EOF > /usr/env_webapp/.env
-            DB_HOST=$(gcloud secrets versions access latest --secret=${{ secrets.DB_HOST_CLOUD_NAME }})
-            DB_USER=${{ secrets.DB_USER_CLOUD }}
-            DB_PASSWORD=$(gcloud secrets versions access latest --secret=${{ secrets.DB_PASSWORD_CLOUD_NAME }})
-            DB_NAME=${{ secrets.DB_NAME_CLOUD }}
-            NODE_ENV=${{ secrets.NODE_ENV }}
-            PROJECT_ID=${{ secrets.PROJECT_ID }}
-            TOPIC_NAME=${{ secrets.TOPIC_NAME }}
-            EOF
+      #       # Create or overwrite the .env file
+      #       cat <<EOF > /usr/env_webapp/.env
+      #       DB_HOST=$(gcloud secrets versions access latest --secret=${{ secrets.DB_HOST_CLOUD_NAME }})
+      #       DB_USER=${{ secrets.DB_USER_CLOUD }}
+      #       DB_PASSWORD=$(gcloud secrets versions access latest --secret=${{ secrets.DB_PASSWORD_CLOUD_NAME }})
+      #       DB_NAME=${{ secrets.DB_NAME_CLOUD }}
+      #       NODE_ENV=${{ secrets.NODE_ENV }}
+      #       PROJECT_ID=${{ secrets.PROJECT_ID }}
+      #       TOPIC_NAME=${{ secrets.TOPIC_NAME }}
+      #       EOF
           
-            # Set permissions
-            chmod 655 /usr/env_webapp/.env
-            chown csye6225:csye6225 /usr/env_webapp/.env
+      #       # Set permissions
+      #       chmod 655 /usr/env_webapp/.env
+      #       chown csye6225:csye6225 /usr/env_webapp/.env
           
-            # Run the application service
-            sudo systemctl start webapp
-            sudo systemctl start google-cloud-ops-agent' \
-            --verbosity=debug
+      #       # Run the application service
+      #       sudo systemctl start webapp
+      #       sudo systemctl start google-cloud-ops-agent' \
+      #       --verbosity=debug
       
 
       # - name: Create New Instance Template
@@ -187,6 +187,46 @@ jobs:
       #       --quiet
       # - Update the Instance Group with the new Instance Template
       # - name: Update Instance Group
+
+      - name: Create instance template
+        run: |
+          DB_PASSWORD=$(gcloud secrets versions access latest --secret=${{ secrets.DB_PASSWORD_CLOUD_NAME }})
+          DB_HOST=$(gcloud secrets versions access latest --secret=${{ secrets.DB_HOST_CLOUD_NAME }})
+
+          gcloud compute instance-templates create webapp-instance-${{ github.sha }} \
+            --machine-type=e2-medium \
+            --instance-template-region=${{ secrets.REGION }} \
+            --region=${{ secrets.REGION }} \
+            --tags=vpc2-webapp,http-server \
+            --image=projects/${{ secrets.PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
+            --boot-disk-size=40 \
+            --boot-disk-type=pd-ssd \
+            --boot-disk-device-name=terraform-instance \
+            --network=vpc2 \
+            --subnet=vpc2-webapp \
+            --service-account=ops-agent-service-account-vpc2@${{ secrets.PROJECT_ID }}.iam.gserviceaccount.com \
+            --scopes=https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/pubsub,https://www.googleapis.com/auth/cloudkms \
+            --no-boot-disk-auto-delete \
+            --boot-disk-kms-key=$(gcloud secrets versions access latest --secret=${{ secrets.VM_KMS_KEY_NAME }}) \
+            --metadata startup-script='#!/bin/bash
+              mkdir -p /usr/env_webapp
+              # Create or overwrite the .env file
+              cat <<EOF > /usr/env_webapp/.env
+              DB_HOST=$DB_HOST
+              DB_USER=${{ secrets.DB_USER_CLOUD }}
+              DB_PASSWORD=$DB_PASSWORD
+              DB_NAME=${{ secrets.DB_NAME_CLOUD }}
+              NODE_ENV=${{ secrets.NODE_ENV }}
+              PROJECT_ID=${{ secrets.PROJECT_ID }}
+              TOPIC_NAME=${{ secrets.TOPIC_NAME }}
+              EOF
+              # Set permissions
+              chmod 655 /usr/env_webapp/.env
+              chown csye6225:csye6225 /usr/env_webapp/.env
+              # Run the application service
+              sudo systemctl start webapp
+              sudo systemctl start google-cloud-ops-agent' \
+            --verbosity=debug
       - name: Update Instance Group
         run: |
           gcloud compute instance-groups managed set-instance-template vpc2-webapp-instance-group \

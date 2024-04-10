@@ -107,7 +107,7 @@ jobs:
             --instance-template-region=${{ secrets.REGION }} \
             --region=${{ secrets.REGION }} \
             --tags=vpc2-webapp,https-server \
-            --image=projects/${{ secrets.GOOGLE_PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
+            --image=projects/${{ secrets.PROJECT_ID }}/global/images/${{ secrets.IMAGE_NAME }} \
             --boot-disk-size=40 \
             --boot-disk-type=pd-ssd \
             --boot-disk-device-name=terraform-instance \

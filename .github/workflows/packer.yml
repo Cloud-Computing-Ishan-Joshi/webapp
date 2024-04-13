@@ -213,15 +213,13 @@ jobs:
             --metadata startup-script="#!/bin/bash
               mkdir -p /usr/env_webapp
               # Create or overwrite the .env file
-              sudo sh -c  \"cat << EOF > /usr/env_webapp/.env
-              DB_HOST=$DB_HOST
-              DB_USER=${{ secrets.DB_USER_CLOUD }}
-              DB_PASSWORD=$DB_PASSWORD
-              DB_NAME=${{ secrets.DB_NAME_CLOUD }}
-              NODE_ENV=${{ secrets.NODE_ENV }}
-              PROJECT_ID=${{ secrets.PROJECT_ID }}
-              TOPIC_NAME=${{ secrets.TOPIC_NAME }}
-              EOF\"
+              echo 'DB_HOST=$DB_HOST' > /usr/env_webapp/.env
+              echo 'DB_USER=${{ secrets.DB_USER_CLOUD }}' >> /usr/env_webapp/.env
+              echo 'DB_PASSWORD=$DB_PASSWORD' >> /usr/env_webapp/.env
+              echo 'DB_NAME=${{ secrets.DB_NAME_CLOUD }}' >> /usr/env_webapp/.env
+              echo 'NODE_ENV=${{ secrets.NODE_ENV }}' >> /usr/env_webapp/.env
+              echo 'PROJECT_ID=${{ secrets.PROJECT_ID }}' >> /usr/env_webapp/.env
+              echo 'TOPIC_NAME=${{ secrets.TOPIC_NAME }}' >> /usr/env_webapp/.env
               # Set permissions
               chmod 655 /usr/env_webapp/.env
               chown csye6225:csye6225 /usr/env_webapp/.env

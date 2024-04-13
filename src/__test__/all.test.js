@@ -66,7 +66,7 @@ describe('User endpoint', () => {
             password: password
         };
         try {
-            response = await request(app).post('/v1/user').send(request_body);
+            response = await request(app).post('/v2/user').send(request_body);
             response_post = await response;
             expect(response.statusCode).toBe(201);
             expect(response.headers['cache-control']).toBe('no-cache');
@@ -80,7 +80,7 @@ describe('User endpoint', () => {
             password: password
         };
         try {
-            const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
+            const response = await request(app).get('/v2/user/self').auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(403);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
@@ -95,7 +95,7 @@ describe('User endpoint', () => {
         };
         try {
             // console.log();
-            const response = await request(app).get(`/v1/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
+            const response = await request(app).get(`/v2/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(204);
             expect(response.headers['cache-control']).toBe('no-cache');
         }
@@ -110,8 +110,8 @@ describe('User endpoint', () => {
             password: password
         };
         try {
-            await request(app).get(`/v1/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
-            const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
+            await request(app).get(`/v2/user/verify/${response_post.body.token}`).auth(basic_auth.username, basic_auth.password);
+            const response = await request(app).get('/v2/user/self').auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(200);
             expect(response.body.first_name).toBe(first_name);
             expect(response.body.last_name).toBe(last_name);
@@ -131,7 +131,7 @@ describe('User endpoint', () => {
             last_name: last_name_update
         };
         try {
-            const response = await request(app).put('/v1/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
+            const response = await request(app).put('/v2/user/self').send(request_body).auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(204);
             expect(response.headers['cache-control']).toBe('no-cache');
         } catch (err) {
@@ -145,7 +145,7 @@ describe('User endpoint', () => {
             password: password
         };
         try {
-            const response = await request(app).get('/v1/user/self').auth(basic_auth.username, basic_auth.password);
+            const response = await request(app).get('/v2/user/self').auth(basic_auth.username, basic_auth.password);
             expect(response.statusCode).toBe(200);
             expect(response.body.first_name).toBe(first_name_update);
             expect(response.body.last_name).toBe(last_name_update);

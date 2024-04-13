@@ -79,7 +79,7 @@ app.use(bodyParser.json({
 
 app.use(healthz);
 
-app.use('/v1/user', user_routes);
+app.use('/v2/user', user_routes);
 
 app.all('*', (req, res) => {
     logger.debug('* API path');
